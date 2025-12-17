@@ -17,6 +17,7 @@ let allBookings = [];
 // ================================
 document.addEventListener("DOMContentLoaded", () => {
     loadAllBookings();
+    setInterval(refreshPendingBookings, 10000);
 
     const exportBtn = document.getElementById("exportBtn");
     if (exportBtn) {
@@ -60,6 +61,42 @@ async function loadAllBookings() {
 
     renderAll();
 }
+// ================================
+// REFRESH ONLY PENDING BOOKINGS
+// ================================
+async function refreshPendingBookings() {
+    try {
+        const res = await fetch(
+            `${SUPABASE_URL}/rest/v1/${TABLE}?status=eq.pending&order=created_at.desc`,
+            {
+                headers: {
+                    apikey: SUPABASE_KEY,
+                    Authorization: `Bearer ${SUPABASE_KEY}`,
+                },
+            }
+        );
+
+        if (!res.ok) return;
+
+        const pendingData = await res.json();
+
+        // Keep accepted & rejected as-is
+        const nonPending = allBookings.filter(b => b.status !== "pending");
+
+        // Merge updated pending bookings
+        allBookings = [
+            ...pendingData.map(b => ({ ...b, status: "pending" })),
+            ...nonPending
+        ];
+
+        // Re-render ONLY pending table
+        renderTable("pending", "pendingList", true);
+
+    } catch (err) {
+        console.error("Pending refresh failed:", err);
+    }
+}
+
 
 // ================================
 // RENDER TABLES
