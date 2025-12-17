@@ -1,4 +1,4 @@
-/* RESET */
+/* ================= RESET ================= */
 * {
     margin: 0;
     padding: 0;
@@ -12,7 +12,7 @@ body {
     line-height: 1.6;
 }
 
-/* NAVBAR */
+/* ================= NAVBAR ================= */
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -26,7 +26,17 @@ body {
 }
 
 .logo {
-    font-size: 22px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo img {
+    height: 45px;
+}
+
+.logo span {
+    font-size: 20px;
     font-weight: bold;
     color: #e84a7a;
 }
@@ -42,7 +52,7 @@ body {
     color: #e84a7a;
 }
 
-/* HERO SECTION */
+/* ================= HERO ================= */
 .hero {
     position: relative;
     height: 420px;
@@ -63,7 +73,7 @@ body {
     transform: translate(-50%, -50%);
     text-align: center;
     background: rgba(255, 255, 255, 0.85);
-    padding: 40px 50px;
+    padding: 40px;
     border-radius: 16px;
 }
 
@@ -74,13 +84,11 @@ body {
 }
 
 .hero-text p {
-    font-size: 16px;
-    margin-bottom: 20px;
     color: #555;
+    margin-bottom: 20px;
 }
 
 .btn {
-    display: inline-block;
     padding: 12px 28px;
     background: #f7b731;
     color: #000;
@@ -93,7 +101,7 @@ body {
     background: #f5a623;
 }
 
-/* SECTIONS */
+/* ================= SECTIONS ================= */
 .section {
     padding: 60px 80px;
     text-align: center;
@@ -109,20 +117,19 @@ body {
     background: #fff5f8;
 }
 
-/* GRID */
+/* ================= GRID & CARDS ================= */
 .grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 30px;
 }
 
-/* CARDS */
 .card {
     background: #fff;
     border-radius: 18px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
     padding: 20px;
-    transition: transform 0.3s ease;
+    transition: 0.3s;
 }
 
 .card:hover {
@@ -138,17 +145,15 @@ body {
 
 .card h3 {
     margin: 15px 0 5px;
-    font-size: 18px;
 }
 
 .price {
     color: #e84a7a;
     font-weight: bold;
-    font-size: 18px;
     margin-bottom: 12px;
 }
 
-/* WHATSAPP BUTTON */
+/* Buttons */
 .card button {
     background: #3cb371;
     color: #fff;
@@ -156,48 +161,190 @@ body {
     padding: 10px 18px;
     border-radius: 25px;
     cursor: pointer;
-    font-size: 14px;
 }
 
 .card button:hover {
     background: #2e9e5f;
 }
 
-/* DELIVERY TEXT */
-.delivery {
-    font-size: 18px;
-    background: #fff5f8;
-    padding: 20px;
-    border-radius: 12px;
-    display: inline-block;
+/* ================= COMBO CARD ================= */
+#combos .card {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    text-align: center;
 }
 
-/* FOOTER */
+#combos .card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+}
+
+/* ================= COMBO IMAGES ================= */
+.combo-images {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.combo-images img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 14px;
+}
+
+/* ================= COMBO TITLE ================= */
+#combos .card h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin: 10px 0 6px;
+    line-height: 1.3;
+}
+
+/* ================= PRICE ================= */
+#combos .price {
+    font-size: 18px;
+    font-weight: 700;
+    color: #e91e63;
+    margin-bottom: 12px;
+}
+
+/* ================= BUTTON ================= */
+#combos button {
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    color: #fff;
+    border: none;
+    padding: 10px 22px;
+    font-size: 14px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+#combos button:hover {
+    background: linear-gradient(135deg, #27ae60, #219150);
+    transform: scale(1.05);
+}
+
+/* ================= MOBILE FRIENDLY ================= */
+@media (max-width: 600px) {
+    .combo-images img {
+        height: 120px;
+    }
+
+    #combos .card h3 {
+        font-size: 15px;
+    }
+}
+
+
+/* ================= BOOKING FORM ================= */
+#order {
+    background: #fff8f0;
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 40px 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+#order h2 {
+    color: #d35400;
+}
+
+.delivery {
+    background: #fff5f8;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+}
+
+#bookingForm {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px 20px;
+}
+
+#bookingForm label {
+    font-weight: 600;
+    text-align: left;
+}
+
+#bookingForm input {
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+#bookingForm input:focus {
+    border-color: #d35400;
+    outline: none;
+}
+
+#bookingForm input#item {
+    background: #f2f2f2;
+    cursor: not-allowed;
+}
+
+#bookingForm button {
+    grid-column: 1 / 3;
+    padding: 12px;
+    background: #d35400;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#bookingForm button:hover {
+    background: #e67e22;
+}
+
+/* ================= POPUP ================= */
+.booking-popup {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-content {
+    background: #fff8f0;
+    padding: 25px;
+    border-radius: 10px;
+    max-width: 400px;
+    text-align: center;
+    position: relative;
+}
+
+.popup-content .close {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+/* ================= FOOTER ================= */
 footer {
     background: #fbe1ea;
     text-align: center;
     padding: 15px;
     font-size: 14px;
-    color: #555;
 }
 
-/* RESPONSIVE */
-@media (max-width: 768px) {
-    .section {
-        padding: 40px 20px;
-    }
-
-    .hero-text {
-        width: 90%;
-        padding: 25px;
-    }
-
-    .hero-text h1 {
-        font-size: 26px;
-    }
-}
-
-/* WHATSAPP FLOATING BUTTON */
+/* ================= WHATSAPP FLOAT ================= */
 .whatsapp-float {
     position: fixed;
     bottom: 25px;
@@ -208,31 +355,27 @@ footer {
     width: 55px;
     height: 55px;
     border-radius: 50%;
-    text-align: center;
     line-height: 55px;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-    z-index: 999;
+    text-align: center;
     text-decoration: none;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
 }
 
-.whatsapp-float:hover {
-    background: #1ebe5d;
-}
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px) {
+    .section {
+        padding: 40px 20px;
+    }
 
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
+    .hero-text h1 {
+        font-size: 26px;
+    }
 
-.logo img {
-    height: 45px;
-    width: auto;
-}
+    #bookingForm {
+        grid-template-columns: 1fr;
+    }
 
-.logo span {
-    font-size: 20px;
-    font-weight: bold;
-    color: #e84a7a;
-    white-space: nowrap;
+    #bookingForm button {
+        grid-column: 1;
+    }
 }

@@ -1,0 +1,204 @@
+/* ================================
+   ROOT & BODY
+================================ */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+    background: radial-gradient(circle at top, #eef2ff, #f8fafc);
+    margin: 0;
+    padding: 32px;
+    color: #0f172a;
+}
+
+/* ================================
+   PAGE CONTAINER
+================================ */
+body>* {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ================================
+   HEADER
+================================ */
+h1 {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 8px;
+}
+
+/* ================================
+   EXPORT BUTTON
+================================ */
+.export {
+    margin: 16px 0 28px;
+}
+
+.export button {
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 600;
+    box-shadow: 0 10px 30px rgba(79, 70, 229, 0.35);
+}
+
+.export button:hover {
+    transform: translateY(-2px);
+}
+
+/* ================================
+   WHATSAPP TOGGLE BAR
+================================ */
+.toggle-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #ffffff;
+    padding: 14px 18px;
+    border-radius: 14px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+    margin-bottom: 30px;
+    font-weight: 600;
+}
+
+/* ================================
+   SECTION CARD
+================================ */
+section {
+    background: #ffffff;
+    padding: 22px 22px 26px;
+    border-radius: 18px;
+    box-shadow: 0 14px 40px rgba(15, 23, 42, 0.08);
+    margin-bottom: 36px;
+}
+
+/* ================================
+   SECTION HEADINGS
+================================ */
+section h2 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 18px;
+}
+
+/* ================================
+   TABLE
+================================ */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    overflow: hidden;
+}
+
+th {
+    background: #f1f5f9;
+    padding: 14px 16px;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #475569;
+    text-align: left;
+}
+
+td {
+    padding: 14px 16px;
+    font-size: 14px;
+    border-top: 1px solid #e5e7eb;
+}
+
+tr:hover td {
+    background: #f8fafc;
+}
+
+/* ================================
+   ACTION BUTTONS
+================================ */
+button {
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 18px;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+/* ACCEPT */
+button.accept {
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    color: #ffffff;
+    box-shadow: 0 8px 20px rgba(34, 197, 94, 0.4);
+}
+
+button.accept:hover {
+    transform: translateY(-2px) scale(1.05);
+}
+
+/* REJECT */
+button.reject {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: #ffffff;
+    margin-left: 8px;
+    box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+}
+
+button.reject:hover {
+    transform: translateY(-2px) scale(1.05);
+}
+
+/* ================================
+   EMPTY STATE
+================================ */
+td[colspan] {
+    text-align: center;
+    color: #64748b;
+    font-style: italic;
+    padding: 20px;
+}
+
+/* ================================
+   WHATSAPP TOGGLE
+================================ */
+#whatsappToggle {
+    appearance: none;
+    width: 52px;
+    height: 28px;
+    background: #cbd5f5;
+    border-radius: 999px;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+#whatsappToggle::before {
+    content: "";
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    top: 3px;
+    left: 3px;
+    background: #ffffff;
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+}
+
+#whatsappToggle:checked {
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+}
+
+#whatsappToggle:checked::before {
+    transform: translateX(24px);
+}

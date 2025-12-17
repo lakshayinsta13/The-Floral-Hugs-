@@ -6,27 +6,29 @@
     <title>The Floral Hugs | Flowers & Cakes Delivery</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
-</head>
-<!-- WHATSAPP FLOATING BUTTON -->
-<a href="https://wa.me/919875543210" target="_blank" class="whatsapp-float">
-    💬
-</a>
+    <script type="module" src="script.js"></script>
 
+
+
+</head>
 
 <body>
 
+    <!-- WHATSAPP FLOATING BUTTON -->
+    <a href="https://wa.me/919875543210" target="_blank" class="whatsapp-float">💬</a>
+
+    <!-- NAVBAR -->
     <header class="navbar">
         <div class="logo">
             <img src="images/logo.png" alt="The Floral Hugs Logo">
             <span>The Floral Hugs</span>
         </div>
-
-
         <nav>
             <a href="#home">Home</a>
             <a href="#flowers">Flowers</a>
             <a href="#cakes">Cakes</a>
             <a href="#order">Order</a>
+            <a href="#combos">Combos</a>
         </nav>
     </header>
 
@@ -46,24 +48,24 @@
         <div class="grid">
 
             <div class="card">
-                <img src="images/pexels-rehman-yousaf-321165099-30456326.jpg">
+                <img src="images/pexels-rehman-yousaf-321165099-30456326.jpg" alt="">
                 <h3>Red Rose Bouquet</h3>
                 <p class="price">₹699</p>
-                <button onclick="whatsappOrder('Red Rose Bouquet - ₹699')">WhatsApp Order</button>
+                <button type="button" onclick="bookNow('Red Rose Bouquet - ₹699')">Book Now</button>
             </div>
 
             <div class="card">
-                <img src="images/pexels-valeriya-1484657.jpg">
+                <img src="images/pexels-valeriya-1484657.jpg" alt="">
                 <h3>Mixed Flower Bouquet</h3>
                 <p class="price">₹899</p>
-                <button onclick="whatsappOrder('Mixed Flower Bouquet - ₹899')">WhatsApp Order</button>
+                <button type="button" onclick="bookNow('Mixed Flower Bouquet - ₹899')">Book Now</button>
             </div>
 
             <div class="card">
-                <img src="images/pexels-solliefoto-313697.jpg">
+                <img src="images/pexels-solliefoto-313697.jpg" alt="">
                 <h3>White Lily Bouquet</h3>
                 <p class="price">₹1,099</p>
-                <button onclick="whatsappOrder('White Lily Bouquet - ₹1099')">WhatsApp Order</button>
+                <button type="button" onclick="bookNow('White Lily Bouquet - ₹1099')">Book Now</button>
             </div>
 
         </div>
@@ -75,27 +77,140 @@
         <div class="grid">
 
             <div class="card">
-                <img src="images/pexels-3374640-8802102.jpg">
+                <img src="images/pexels-3374640-8802102.jpg" alt="">
                 <h3>Chocolate Cake (1kg)</h3>
                 <p class="price">₹899</p>
-                <button onclick="whatsappOrder('Chocolate Cake 1kg - ₹899')">WhatsApp Order</button>
+                <button type="button" onclick="bookNow('Chocolate Cake 1kg - ₹899')">Book Now</button>
             </div>
 
             <div class="card">
-                <img src="images/pexels-darkou-10975256.jpg">
+                <img src="images/pexels-darkou-10975256.jpg" alt="">
                 <h3>Black Forest Cake (1kg)</h3>
                 <p class="price">₹999</p>
-                <button onclick="whatsappOrder('Black Forest Cake 1kg - ₹999')">WhatsApp Order</button>
+                <button type="button" onclick="bookNow('Black Forest Cake 1kg - ₹999')">Book Now</button>
             </div>
 
         </div>
     </section>
 
-    <!-- ORDER FORM -->
-    <section id="order" class="section">
-        <p class="delivery">
-            📍 Home delivery available near <strong>Palampur, Kangra (HP)</strong>
+    <!-- COMBOS -->
+    <!-- COMBOS -->
+    <section id="combos" class="section bg-light">
+        <h2>Flower + Cake Combos</h2>
+        <p style="text-align:center; margin-bottom:20px;">
+            Perfectly paired bouquets and cakes for your special moments 🌸🎂
         </p>
+
+        <div class="grid">
+
+            <!-- Combo 1 -->
+            <div class="card">
+                <div class="combo-images">
+                    <img src="images/pexels-rehman-yousaf-321165099-30456326.jpg" alt="Red Roses">
+                    <img src="images/pexels-3374640-8802102.jpg" alt="Chocolate Cake">
+                </div>
+                <h3>Red Rose Bouquet + Chocolate Cake</h3>
+                <p class="price">₹1,499</p>
+                <button type="button" onclick="bookNow('Combo: Red Rose Bouquet + Chocolate Cake - ₹1499')">
+                    Book Now
+                </button>
+            </div>
+
+            <!-- Combo 2 -->
+            <div class="card">
+                <div class="combo-images">
+                    <img src="images/pexels-rehman-yousaf-321165099-30456326.jpg" alt="Red Roses">
+                    <img src="images/pexels-darkou-10975256.jpg" alt="Black Forest Cake">
+                </div>
+                <h3>Red Rose Bouquet + Black Forest Cake</h3>
+                <p class="price">₹1,599</p>
+                <button type="button" onclick="bookNow('Combo: Red Rose Bouquet + Black Forest Cake - ₹1599')">
+                    Book Now
+                </button>
+            </div>
+
+            <!-- Combo 3 -->
+            <div class="card">
+                <div class="combo-images">
+                    <img src="images/pexels-valeriya-1484657.jpg" alt="Mixed Flowers">
+                    <img src="images/pexels-3374640-8802102.jpg" alt="Chocolate Cake">
+                </div>
+                <h3>Mixed Flower Bouquet + Chocolate Cake</h3>
+                <p class="price">₹1,699</p>
+                <button type="button" onclick="bookNow('Combo: Mixed Flower Bouquet + Chocolate Cake - ₹1699')">
+                    Book Now
+                </button>
+            </div>
+
+            <!-- Combo 4 -->
+            <div class="card">
+                <div class="combo-images">
+                    <img src="images/pexels-valeriya-1484657.jpg" alt="Mixed Flowers">
+                    <img src="images/pexels-darkou-10975256.jpg" alt="Black Forest Cake">
+                </div>
+                <h3>Mixed Flower Bouquet + Black Forest Cake</h3>
+                <p class="price">₹1,799</p>
+                <button type="button" onclick="bookNow('Combo: Mixed Flower Bouquet + Black Forest Cake - ₹1799')">
+                    Book Now
+                </button>
+            </div>
+
+            <!-- Combo 5 -->
+            <div class="card">
+                <div class="combo-images">
+                    <img src="images/pexels-solliefoto-313697.jpg" alt="White Lily">
+                    <img src="images/pexels-3374640-8802102.jpg" alt="Chocolate Cake">
+                </div>
+                <h3>White Lily Bouquet + Chocolate Cake</h3>
+                <p class="price">₹1,899</p>
+                <button type="button" onclick="bookNow('Combo: White Lily Bouquet + Chocolate Cake - ₹1899')">
+                    Book Now
+                </button>
+            </div>
+
+            <!-- Combo 6 -->
+            <div class="card">
+                <div class="combo-images">
+                    <img src="images/pexels-solliefoto-313697.jpg" alt="White Lily">
+                    <img src="images/pexels-darkou-10975256.jpg" alt="Black Forest Cake">
+                </div>
+                <h3>White Lily Bouquet + Black Forest Cake</h3>
+                <p class="price">₹1,999</p>
+                <button type="button" onclick="bookNow('Combo: White Lily Bouquet + Black Forest Cake - ₹1999')">
+                    Book Now
+                </button>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- BOOKING FORM -->
+    <section id="order" class="section">
+        <h2>Book Your Order</h2>
+        <p class="delivery">📍 Home delivery available near <strong>Palampur, Kangra (HP)</strong></p>
+
+        <form id="bookingForm" novalidate>
+            <label>Name</label>
+            <input type="text" name="name" required>
+
+            <label>Location</label>
+            <input type="text" name="location" required>
+
+            <label>Event Type</label>
+            <input type="text" name="eventType" required>
+
+            <label>Phone Number</label>
+            <input type="tel" name="phone" required>
+
+            <label>Event Date</label>
+            <input type="date" name="eventDate" required>
+
+            <label>Selected Item</label>
+            <input type="text" id="item" name="item" readonly>
+
+            <button type="submit">Submit Booking</button>
+        </form>
     </section>
 
     <footer>
