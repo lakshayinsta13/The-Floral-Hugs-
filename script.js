@@ -123,4 +123,71 @@ document.addEventListener("DOMContentLoaded", () => {
         popup.querySelector(".close").onclick = () => popup.remove();
         setTimeout(() => popup.remove(), 8000);
     }
+
+    // ================================
+    // PROMO SLIDER (NO EARLY RESET)
+    // ================================
+    const track = document.querySelector(".slider-track");
+    const slides = document.querySelectorAll(".slide");
+    const nextBtn = document.querySelector(".slider-btn.next");
+    const prevBtn = document.querySelector(".slider-btn.prev");
+    const dotsContainer = document.querySelector(".slider-dots");
+
+    if (track && slides.length > 0) {
+        let index = 0;
+        let startX = 0;
+        const total = slides.length;
+
+        // Dots
+        dotsContainer.innerHTML = "";
+        for (let i = 0; i < total; i++) {
+            const dot = document.createElement("span");
+            dot.onclick = () => moveTo(i);
+            dotsContainer.appendChild(dot);
+        }
+        const dots = dotsContainer.querySelectorAll("span");
+
+        function update() {
+            track.style.transform = `translateX(-${index * 100}%)`;
+            dots.forEach(d => d.classList.remove("active"));
+            dots[index].classList.add("active");
+        }
+
+        function moveTo(i) {
+            index = i;
+            update();
+        }
+
+        nextBtn.onclick = () => {
+            index++;
+            if (index === total) index = 0;
+            update();
+        };
+
+        prevBtn.onclick = () => {
+            index--;
+            if (index < 0) index = total - 1;
+            update();
+        };
+
+        // Auto slide
+        setInterval(() => {
+            index++;
+            if (index === total) index = 0;
+            update();
+        }, 4000);
+
+        // Swipe support
+        track.addEventListener("touchstart", e => {
+            startX = e.touches[0].clientX;
+        });
+
+        track.addEventListener("touchend", e => {
+            const endX = e.changedTouches[0].clientX;
+            if (startX - endX > 50) nextBtn.click();
+            if (endX - startX > 50) prevBtn.click();
+        });
+
+        update();
+    }
 });
