@@ -11,19 +11,146 @@ const TABLE_NAME = "bookings";
 // DOM READY
 // ================================
 document.addEventListener("DOMContentLoaded", () => {
+
+    // ================================
+    // ELEMENTS
+    // ================================
     const bookingForm = document.getElementById("bookingForm");
     const itemInput = document.getElementById("item");
 
-    if (!bookingForm) return;
+    const productButtons = document.querySelectorAll(".product-btn");
+    const multiToggle = document.getElementById("multiMode");
+
+    const cartBtn = document.getElementById("cartButton");
+    const cartPopup = document.getElementById("cartPopup");
+    const cartItems = document.getElementById("cartItems");
+    const cartTotal = document.getElementById("cartTotal");
+    const cartCount = document.getElementById("cartCount");
+
+    if (!bookingForm || !itemInput) return;
 
     // ================================
-    // BOOK NOW BUTTON (FROM UI CARDS)
+    // STATE
     // ================================
-    window.bookNow = function (itemName) {
-        if (itemInput) itemInput.value = itemName;
-        document
-            .getElementById("order")
-            .scrollIntoView({ behavior: "smooth" });
+    let multiMode = false;
+    let selectedItems = [];
+
+    // ================================
+    // MULTI MODE TOGGLE
+    // ================================
+    multiToggle.addEventListener("change", () => {
+        multiMode = multiToggle.checked;
+        selectedItems = [];
+        updateCart();
+        updateButtons();
+    });
+    // booking navigation for cart list 
+    const goToBookingBtn = document.getElementById("goToBooking");
+
+    if (goToBookingBtn) {
+        goToBookingBtn.addEventListener("click", () => {
+            cartPopup.classList.add("hidden");
+            document.getElementById("order")
+                .scrollIntoView({ behavior: "smooth" });
+        });
+    }
+    // phone no validation for indian format
+    const phoneInput = document.getElementById("phone");
+
+    // Block non-numeric typing
+    phoneInput.addEventListener("input", () => {
+        phoneInput.value = phoneInput.value.replace(/\D/g, "").slice(0, 10);
+    });
+
+
+    // ================================
+    // PRODUCT BUTTON CLICK
+    // ================================
+    productButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+            const item = btn.dataset.item;
+
+            // SINGLE MODE
+            if (!multiMode) {
+                itemInput.value = item;
+                document.getElementById("order")
+                    .scrollIntoView({ behavior: "smooth" });
+                return;
+            }
+
+            // MULTI MODE
+            if (!selectedItems.includes(item)) {
+                selectedItems.push(item);
+                updateCart();
+                updateButtons();
+            }
+        });
+    });
+
+    // ================================
+    // UPDATE CART UI
+    // ================================
+    function updateCart() {
+        cartItems.innerHTML = "";
+        let total = 0;
+
+        selectedItems.forEach((item, index) => {
+            const price = Number(item.match(/₹(\d+)/)?.[1] || 0);
+            total += price;
+
+            const li = document.createElement("li");
+            li.innerHTML = `
+                <span>${item}</span>
+                <button data-index="${index}">❌</button>
+            `;
+            cartItems.appendChild(li);
+        });
+
+        cartTotal.textContent = total;
+        cartCount.textContent = selectedItems.length;
+        itemInput.value = selectedItems.join(", ");
+
+        cartBtn.classList.toggle(
+            "hidden",
+            !multiMode || selectedItems.length === 0
+        );
+
+        // REMOVE ITEM
+        cartItems.querySelectorAll("button").forEach(btn => {
+            btn.onclick = () => {
+                selectedItems.splice(btn.dataset.index, 1);
+                updateCart();
+                updateButtons();
+            };
+        });
+    }
+
+    // ================================
+    // UPDATE BUTTON TEXT
+    // ================================
+    function updateButtons() {
+        productButtons.forEach(btn => {
+            const item = btn.dataset.item;
+
+            if (!multiMode) {
+                btn.textContent = "Book Now";
+            } else {
+                btn.textContent = selectedItems.includes(item)
+                    ? "Added ✓"
+                    : "Add Item";
+            }
+        });
+    }
+
+    // ================================
+    // CART TOGGLE
+    // ================================
+    cartBtn.addEventListener("click", () => {
+        cartPopup.classList.toggle("hidden");
+    });
+
+    window.closeCart = () => {
+        cartPopup.classList.add("hidden");
     };
 
     // ================================
@@ -41,22 +168,18 @@ document.addEventListener("DOMContentLoaded", () => {
             item: bookingForm.item.value.trim(),
         };
 
-        // ================================
         // VALIDATION
-        // ================================
-        for (const field in bookingData) {
-            if (!bookingData[field]) {
+        for (const key in bookingData) {
+            if (!bookingData[key]) {
                 showPopup(
                     "Form Incomplete",
-                    "Please fill all required fields before submitting your booking."
+                    "Please fill all required fields before submitting."
                 );
                 return;
             }
         }
 
-        // ================================
         // SEND TO SUPABASE
-        // ================================
         try {
             const response = await fetch(
                 `${SUPABASE_URL}/rest/v1/${TABLE_NAME}`,
@@ -71,34 +194,30 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             );
 
-            // Supabase returns empty body → do NOT parse JSON
-            if (!response.ok) {
-                throw new Error("Supabase insert failed");
-            }
+            if (!response.ok) throw new Error("Insert failed");
 
-            // ================================
             // SUCCESS
-            // ================================
             showPopup(
                 "Booking Confirmed 🌸",
                 `
-        Thank you <strong>${bookingData.name}</strong>!<br><br>
-        Your booking request has been sent successfully.<br>
-        We will contact you shortly on <strong>WhatsApp</strong> to confirm details.
-        `
+                Thank you <strong>${bookingData.name}</strong>!<br><br>
+                Please take a screenshot of this screen as proof of order.<br><br>
+                📲 We will contact you shortly on WhatsApp.
+                `
             );
 
+            // RESET EVERYTHING
             bookingForm.reset();
+            selectedItems = [];
+            updateCart();
+            updateButtons();
+            cartPopup.classList.add("hidden");
 
-        } catch (err) {
-            console.error("Booking error:", err);
-
+        } catch (error) {
+            console.error(error);
             showPopup(
                 "Booking Failed 😔",
-                `
-        Something went wrong while sending your booking.<br><br>
-        Please try again later or contact us on WhatsApp.
-        `
+                "Something went wrong. Please try again later."
             );
         }
     });
@@ -111,12 +230,12 @@ document.addEventListener("DOMContentLoaded", () => {
         popup.className = "booking-popup";
 
         popup.innerHTML = `
-      <div class="popup-content">
-        <span class="close">&times;</span>
-        <h3>${title}</h3>
-        <p>${message}</p>
-      </div>
-    `;
+            <div class="popup-content">
+                <span class="close">&times;</span>
+                <h3>${title}</h3>
+                <p>${message}</p>
+            </div>
+        `;
 
         document.body.appendChild(popup);
 
@@ -125,7 +244,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ================================
-    // PROMO SLIDER (NO EARLY RESET)
+    // PROMO SLIDER
     // ================================
     const track = document.querySelector(".slider-track");
     const slides = document.querySelectorAll(".slide");
@@ -133,21 +252,20 @@ document.addEventListener("DOMContentLoaded", () => {
     const prevBtn = document.querySelector(".slider-btn.prev");
     const dotsContainer = document.querySelector(".slider-dots");
 
-    if (track && slides.length > 0) {
+    if (track && slides.length) {
         let index = 0;
         let startX = 0;
-        const total = slides.length;
 
-        // Dots
         dotsContainer.innerHTML = "";
-        for (let i = 0; i < total; i++) {
+        slides.forEach((_, i) => {
             const dot = document.createElement("span");
             dot.onclick = () => moveTo(i);
             dotsContainer.appendChild(dot);
-        }
+        });
+
         const dots = dotsContainer.querySelectorAll("span");
 
-        function update() {
+        function updateSlider() {
             track.style.transform = `translateX(-${index * 100}%)`;
             dots.forEach(d => d.classList.remove("active"));
             dots[index].classList.add("active");
@@ -155,29 +273,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
         function moveTo(i) {
             index = i;
-            update();
+            updateSlider();
         }
 
         nextBtn.onclick = () => {
-            index++;
-            if (index === total) index = 0;
-            update();
+            index = (index + 1) % slides.length;
+            updateSlider();
         };
 
         prevBtn.onclick = () => {
-            index--;
-            if (index < 0) index = total - 1;
-            update();
+            index = (index - 1 + slides.length) % slides.length;
+            updateSlider();
         };
 
-        // Auto slide
         setInterval(() => {
-            index++;
-            if (index === total) index = 0;
-            update();
+            index = (index + 1) % slides.length;
+            updateSlider();
         }, 4000);
 
-        // Swipe support
         track.addEventListener("touchstart", e => {
             startX = e.touches[0].clientX;
         });
@@ -188,6 +301,6 @@ document.addEventListener("DOMContentLoaded", () => {
             if (endX - startX > 50) prevBtn.click();
         });
 
-        update();
+        updateSlider();
     }
 });
