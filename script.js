@@ -181,7 +181,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ================================
-    // MULTI MODE TOGGLE (FIXED)
+    // MULTI MODE TOGGLE ()
     // ================================
     multiToggle.addEventListener("change", () => {
         multiMode = multiToggle.checked;
