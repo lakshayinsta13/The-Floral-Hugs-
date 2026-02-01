@@ -11,7 +11,6 @@ const TABLE_NAME = "bookings";
 // DOM READY
 // ================================
 document.addEventListener("DOMContentLoaded", () => {
-
     // ================================
     // ELEMENTS
     // ================================
@@ -27,130 +26,284 @@ document.addEventListener("DOMContentLoaded", () => {
     const cartTotal = document.getElementById("cartTotal");
     const cartCount = document.getElementById("cartCount");
 
-    if (!bookingForm || !itemInput) return;
+    const qtyRows = document.querySelectorAll(".qty-row");
+
+    if (!bookingForm || !itemInput || !multiToggle) return;
 
     // ================================
     // STATE
     // ================================
     let multiMode = false;
-    let selectedItems = [];
+
+    /**
+     * cart = {
+     *   "Red Rose Bouquet": { key, name, price, qty, isCake, unitLabel }
+     * }
+     */
+    let cart = {};
 
     // ================================
-    // MULTI MODE TOGGLE
+    // FORCE MULTI MODE OFF ON LOAD
+    // (fix browser caching checked state)
     // ================================
-    multiToggle.addEventListener("change", () => {
-        multiMode = multiToggle.checked;
-        selectedItems = [];
-        updateCart();
+    function resetMultiModeHard() {
+        multiToggle.checked = false;
+        multiMode = false;
+        cart = {};
+        if (cartPopup) cartPopup.classList.add("hidden");
+        updateCartUI();
         updateButtons();
-    });
-    // booking navigation for cart list 
-    const goToBookingBtn = document.getElementById("goToBooking");
-
-    if (goToBookingBtn) {
-        goToBookingBtn.addEventListener("click", () => {
-            cartPopup.classList.add("hidden");
-            document.getElementById("order")
-                .scrollIntoView({ behavior: "smooth" });
-        });
     }
-    // phone no validation for indian format
-    const phoneInput = document.getElementById("phone");
 
-    // Block non-numeric typing
-    phoneInput.addEventListener("input", () => {
-        phoneInput.value = phoneInput.value.replace(/\D/g, "").slice(0, 10);
-    });
+    // on first load
+    resetMultiModeHard();
 
-
-    // ================================
-    // PRODUCT BUTTON CLICK
-    // ================================
-    productButtons.forEach(btn => {
-        btn.addEventListener("click", () => {
-            const item = btn.dataset.item;
-
-            // SINGLE MODE
-            if (!multiMode) {
-                itemInput.value = item;
-                document.getElementById("order")
-                    .scrollIntoView({ behavior: "smooth" });
-                return;
-            }
-
-            // MULTI MODE
-            if (!selectedItems.includes(item)) {
-                selectedItems.push(item);
-                updateCart();
-                updateButtons();
-            }
-        });
+    // on back/forward cache restore
+    window.addEventListener("pageshow", () => {
+        resetMultiModeHard();
     });
 
     // ================================
-    // UPDATE CART UI
+    // HELPERS (QTY UI)
     // ================================
-    function updateCart() {
+    function ensureQtyDefault(row) {
+        const qtyEl = row.querySelector(".qty-value");
+        if (!qtyEl) return;
+
+        const val = Number(qtyEl.textContent || "0");
+        if (!val || val < 1) qtyEl.textContent = "1";
+
+        // If cake title has unit-count, keep it in sync on load
+        const card = row.closest(".card");
+        const unitCount = card?.querySelector(".unit-count");
+        if (unitCount) unitCount.textContent = qtyEl.textContent;
+    }
+
+    function getQtyFromRow(row) {
+        const qtyEl = row.querySelector(".qty-value");
+        const q = Number(qtyEl?.textContent || "1");
+        return Math.max(1, q);
+    }
+
+    function setQtyToRow(row, qty) {
+        const q = Math.max(1, qty);
+        const qtyEl = row.querySelector(".qty-value");
+        if (qtyEl) qtyEl.textContent = String(q);
+
+        // cake dynamic title update
+        const card = row.closest(".card");
+        const unitCount = card?.querySelector(".unit-count");
+        if (unitCount) unitCount.textContent = String(q);
+    }
+
+    // detect cake by presence of .unit-count OR product-title with data-unit
+    function getCardMetaFromRow(row) {
+        const card = row.closest(".card");
+        const titleEl = card?.querySelector(".product-title");
+
+        const hasCakeUnit = !!card?.querySelector(".unit-count");
+        const unitLabel = titleEl?.dataset?.unit || (hasCakeUnit ? "Kg" : null);
+
+        const baseNameFromTitle = titleEl?.dataset?.base || null;
+        const isCake = !!unitLabel && (hasCakeUnit || !!titleEl?.dataset?.unit);
+
+        return {
+            isCake,
+            unitLabel: isCake ? unitLabel : null,
+            baseNameFromTitle,
+        };
+    }
+
+    // ================================
+    // HELPERS (CART)
+    // ================================
+    function getTotalQty() {
+        return Object.values(cart).reduce((sum, it) => sum + it.qty, 0);
+    }
+
+    function getTotalPrice() {
+        return Object.values(cart).reduce((sum, it) => sum + it.price * it.qty, 0);
+    }
+
+    function buildBookingString() {
+        const items = Object.values(cart);
+        if (!items.length) return "";
+
+        return items
+            .map((it) => {
+                if (it.isCake) {
+                    return `${it.name} (${it.qty} ${it.unitLabel}) - ₹${it.price * it.qty}`;
+                }
+                return `${it.name} x${it.qty} - ₹${it.price * it.qty}`;
+            })
+            .join(", ");
+    }
+
+    function updateCartUI() {
+        if (!cartItems || !cartTotal || !cartCount || !cartBtn) return;
+
         cartItems.innerHTML = "";
-        let total = 0;
+        const items = Object.values(cart);
 
-        selectedItems.forEach((item, index) => {
-            const price = Number(item.match(/₹(\d+)/)?.[1] || 0);
-            total += price;
+        items.forEach((it) => {
+            const lineTotal = it.price * it.qty;
+            const label = it.isCake
+                ? `${it.name} (${it.qty} ${it.unitLabel})`
+                : `${it.name} x${it.qty}`;
 
             const li = document.createElement("li");
             li.innerHTML = `
-                <span>${item}</span>
-                <button data-index="${index}">❌</button>
-            `;
+        <div style="display:flex; justify-content:space-between; gap:10px; align-items:center;">
+          <span>${label}</span>
+          <span>₹${lineTotal}</span>
+        </div>
+      `;
             cartItems.appendChild(li);
         });
 
-        cartTotal.textContent = total;
-        cartCount.textContent = selectedItems.length;
-        itemInput.value = selectedItems.join(", ");
+        cartTotal.textContent = getTotalPrice();
+        cartCount.textContent = getTotalQty();
+        itemInput.value = buildBookingString();
 
-        cartBtn.classList.toggle(
-            "hidden",
-            !multiMode || selectedItems.length === 0
-        );
-
-        // REMOVE ITEM
-        cartItems.querySelectorAll("button").forEach(btn => {
-            btn.onclick = () => {
-                selectedItems.splice(btn.dataset.index, 1);
-                updateCart();
-                updateButtons();
-            };
-        });
+        // show cart button only in multiMode and if items exist
+        cartBtn.classList.toggle("hidden", !multiMode || items.length === 0);
     }
 
-    // ================================
-    // UPDATE BUTTON TEXT
-    // ================================
     function updateButtons() {
-        productButtons.forEach(btn => {
-            const item = btn.dataset.item;
-
+        productButtons.forEach((btn) => {
+            const key = btn.dataset.name || "";
             if (!multiMode) {
                 btn.textContent = "Book Now";
             } else {
-                btn.textContent = selectedItems.includes(item)
-                    ? "Added ✓"
-                    : "Add Item";
+                btn.textContent = cart[key] ? "Added ✓ (Update Qty)" : "Add Item";
             }
         });
     }
 
     // ================================
-    // CART TOGGLE
+    // MULTI MODE TOGGLE (FIXED)
     // ================================
-    cartBtn.addEventListener("click", () => {
-        cartPopup.classList.toggle("hidden");
+    multiToggle.addEventListener("change", () => {
+        multiMode = multiToggle.checked;
+
+        if (!multiMode) {
+            // turning OFF -> clear everything
+            cart = {};
+            if (cartPopup) cartPopup.classList.add("hidden");
+            updateCartUI();
+            updateButtons();
+        } else {
+            // turning ON -> just update button states
+            updateButtons();
+            updateCartUI();
+        }
     });
 
+    // ================================
+    // Proceed to booking
+    // ================================
+    const goToBookingBtn = document.getElementById("goToBooking");
+    if (goToBookingBtn) {
+        goToBookingBtn.addEventListener("click", () => {
+            if (cartPopup) cartPopup.classList.add("hidden");
+            document.getElementById("order")?.scrollIntoView({ behavior: "smooth" });
+        });
+    }
+
+    // ================================
+    // phone validation
+    // ================================
+    const phoneInput = document.getElementById("phone");
+    if (phoneInput) {
+        phoneInput.addEventListener("input", () => {
+            phoneInput.value = phoneInput.value.replace(/\D/g, "").slice(0, 10);
+        });
+    }
+
+    // ================================
+    // QTY BUTTONS (+ / -)
+    // - Only changes UI qty
+    // - Does NOT add to cart automatically
+    // ================================
+    qtyRows.forEach((row) => {
+        ensureQtyDefault(row);
+
+        const plus = row.querySelector(".plus");
+        const minus = row.querySelector(".minus");
+
+        plus?.addEventListener("click", () => {
+            const current = getQtyFromRow(row);
+            setQtyToRow(row, current + 1);
+        });
+
+        minus?.addEventListener("click", () => {
+            const current = getQtyFromRow(row);
+            setQtyToRow(row, current - 1); // min 1
+        });
+    });
+
+    // ================================
+    // PRODUCT BUTTON CLICK
+    // - reads qty from UI
+    // - single mode: goes to booking
+    // - multi mode: add/update cart
+    // ================================
+    productButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const card = btn.closest(".card");
+            const row = card?.querySelector(".qty-row");
+
+            const key = btn.dataset.name || "";
+            const price = Number(btn.dataset.price || 0);
+            const qty = row ? getQtyFromRow(row) : 1;
+
+            const meta = row
+                ? getCardMetaFromRow(row)
+                : { isCake: false, unitLabel: null, baseNameFromTitle: null };
+
+            const cleanName = meta.isCake ? (meta.baseNameFromTitle || key) : key;
+
+            const itemObj = {
+                key,
+                name: cleanName,
+                price,
+                qty,
+                isCake: meta.isCake,
+                unitLabel: meta.unitLabel,
+            };
+
+            if (!multiMode) {
+                cart = {};
+                cart[key] = itemObj;
+
+                updateCartUI();
+                updateButtons();
+
+                // scroll only in single mode
+                document.getElementById("order")?.scrollIntoView({ behavior: "smooth" });
+                return;
+            }
+
+            // multi mode
+            cart[key] = itemObj;
+            updateCartUI();
+            updateButtons();
+        });
+    });
+
+    // ================================
+    // CART TOGGLE (FIXED)
+    // ================================
+    if (cartBtn && cartPopup) {
+        cartBtn.addEventListener("click", () => {
+            // 🚫 do nothing if multiMode OFF
+            if (!multiMode) return;
+            cartPopup.classList.toggle("hidden");
+        });
+    }
+
     window.closeCart = () => {
-        cartPopup.classList.add("hidden");
+        if (cartPopup) cartPopup.classList.add("hidden");
     };
 
     // ================================
@@ -179,46 +332,44 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        // SEND TO SUPABASE
         try {
-            const response = await fetch(
-                `${SUPABASE_URL}/rest/v1/${TABLE_NAME}`,
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        apikey: SUPABASE_ANON_KEY,
-                        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
-                    },
-                    body: JSON.stringify(bookingData),
-                }
-            );
+            const response = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE_NAME}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    apikey: SUPABASE_ANON_KEY,
+                    Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+                },
+                body: JSON.stringify(bookingData),
+            });
 
             if (!response.ok) throw new Error("Insert failed");
 
-            // SUCCESS
             showPopup(
                 "Booking Confirmed 🌸",
                 `
-                Thank you <strong>${bookingData.name}</strong>!<br><br>
-                Please take a screenshot of this screen as proof of order.<br><br>
-                📲 We will contact you shortly on WhatsApp.
-                `
+          Thank you <strong>${bookingData.name}</strong>!<br><br>
+          Please take a screenshot of this screen as proof of order.<br><br>
+          📲 We will contact you shortly on WhatsApp.
+        `
             );
 
             // RESET EVERYTHING
             bookingForm.reset();
-            selectedItems = [];
-            updateCart();
+            cart = {};
+            itemInput.value = "";
+            if (cartPopup) cartPopup.classList.add("hidden");
+            updateCartUI();
             updateButtons();
-            cartPopup.classList.add("hidden");
 
+            // reset UI qty back to 1
+            qtyRows.forEach((row) => setQtyToRow(row, 1));
+
+            // also reset multi mode OFF (optional but recommended)
+            resetMultiModeHard();
         } catch (error) {
             console.error(error);
-            showPopup(
-                "Booking Failed 😔",
-                "Something went wrong. Please try again later."
-            );
+            showPopup("Booking Failed 😔", "Something went wrong. Please try again later.");
         }
     });
 
@@ -230,12 +381,12 @@ document.addEventListener("DOMContentLoaded", () => {
         popup.className = "booking-popup";
 
         popup.innerHTML = `
-            <div class="popup-content">
-                <span class="close">&times;</span>
-                <h3>${title}</h3>
-                <p>${message}</p>
-            </div>
-        `;
+      <div class="popup-content">
+        <span class="close">&times;</span>
+        <h3>${title}</h3>
+        <p>${message}</p>
+      </div>
+    `;
 
         document.body.appendChild(popup);
 
@@ -244,7 +395,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ================================
-    // PROMO SLIDER
+    // PROMO SLIDER (your same code)
     // ================================
     const track = document.querySelector(".slider-track");
     const slides = document.querySelectorAll(".slide");
@@ -267,7 +418,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         function updateSlider() {
             track.style.transform = `translateX(-${index * 100}%)`;
-            dots.forEach(d => d.classList.remove("active"));
+            dots.forEach((d) => d.classList.remove("active"));
             dots[index].classList.add("active");
         }
 
@@ -291,11 +442,11 @@ document.addEventListener("DOMContentLoaded", () => {
             updateSlider();
         }, 4000);
 
-        track.addEventListener("touchstart", e => {
+        track.addEventListener("touchstart", (e) => {
             startX = e.touches[0].clientX;
         });
 
-        track.addEventListener("touchend", e => {
+        track.addEventListener("touchend", (e) => {
             const endX = e.changedTouches[0].clientX;
             if (startX - endX > 50) nextBtn.click();
             if (endX - startX > 50) prevBtn.click();
@@ -303,4 +454,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         updateSlider();
     }
+
+    // INIT
+    updateButtons();
+    updateCartUI();
 });
