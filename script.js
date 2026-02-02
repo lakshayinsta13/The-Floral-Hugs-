@@ -16,6 +16,25 @@ document.addEventListener("DOMContentLoaded", () => {
     // ================================
     const bookingForm = document.getElementById("bookingForm");
     const itemInput = document.getElementById("item");
+    // ✅ Terms checkbox + submit button
+    const agreeTerms = document.getElementById("agreeTerms");
+    const submitBookingBtn = document.getElementById("submitBookingBtn");
+    // ✅ RECEIPT ELEMENTS
+    const receiptModal = document.getElementById("receiptModal");
+    const closeReceipt = document.getElementById("closeReceipt");
+    const printReceipt = document.getElementById("printReceipt");
+
+    const rId = document.getElementById("rId");
+    const rTime = document.getElementById("rTime");
+    const rName = document.getElementById("rName");
+    const rPhone = document.getElementById("rPhone");
+    const rLocation = document.getElementById("rLocation");
+    const rOccasion = document.getElementById("rOccasion");
+    const rEventDate = document.getElementById("rEventDate");
+    const rItems = document.getElementById("rItems");
+    const rTotal = document.getElementById("rTotal");
+
+
 
     const productButtons = document.querySelectorAll(".product-btn");
     const multiToggle = document.getElementById("multiMode");
@@ -29,6 +48,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const qtyRows = document.querySelectorAll(".qty-row");
 
     if (!bookingForm || !itemInput || !multiToggle) return;
+    // ================================
+    // TERMS CHECKBOX -> ENABLE SUBMIT
+    // ================================
+    if (agreeTerms && submitBookingBtn) {
+        // Always start disabled on page load
+        submitBookingBtn.disabled = !agreeTerms.checked;
+
+        agreeTerms.addEventListener("change", () => {
+            submitBookingBtn.disabled = !agreeTerms.checked;
+        });
+    }
+
 
     // ================================
     // STATE
@@ -311,6 +342,12 @@ document.addEventListener("DOMContentLoaded", () => {
     // ================================
     bookingForm.addEventListener("submit", async (e) => {
         e.preventDefault();
+        // ✅ stop submit if terms not accepted
+        if (agreeTerms && !agreeTerms.checked) {
+            showPopup("Terms Required", "Please accept Terms & Conditions to place booking request.");
+            return;
+        }
+
 
         const bookingData = {
             name: bookingForm.name.value.trim(),
@@ -346,16 +383,56 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!response.ok) throw new Error("Insert failed");
 
             showPopup(
-                "Booking Confirmed 🌸",
+                "Booking Request Sent Success  🌸",
                 `
-          Thank you <strong>${bookingData.name}</strong>!<br><br>
-          Please take a screenshot of this screen as proof of order.<br><br>
-          📲 We will contact you shortly on WhatsApp.
-        `
+      Thank you <strong>${bookingData.name}</strong>!<br><br>
+      ✅ Your booking request has been saved.<br>
+      📲 We will contact you shortly on WhatsApp for confirmation.<br><br>
+
+      <button id="viewReceiptBtn" style="margin-top:10px; padding:10px 14px; border:none; border-radius:10px; cursor:pointer;">
+        View Receipt 🧾
+      </button>
+    `
             );
+            // ✅ Build receipt data from current cart BEFORE reset
+            const receiptId = "FH-" + Date.now();
+            const now = new Date();
+            const timeStr = now.toLocaleString("en-IN");
+
+            const itemsArray = Object.values(cart).map((it) => {
+                const amount = it.price * it.qty;
+                const label = it.isCake
+                    ? `${it.name} (${it.qty} ${it.unitLabel})`
+                    : `${it.name} x${it.qty}`;
+                return { label, amount };
+            });
+
+            const receiptData = {
+                id: receiptId,
+                time: timeStr,
+                name: bookingData.name,
+                phone: bookingData.phone_no,
+                location: bookingData.location,
+                occasion: bookingData.event_type,
+                eventDate: bookingData.event_date,
+                items: itemsArray,
+                total: getTotalPrice(),
+            };
+
+            // ✅ connect popup button click -> open receipt
+            setTimeout(() => {
+                const btn = document.getElementById("viewReceiptBtn");
+                if (btn) btn.onclick = () => openReceipt(receiptData);
+            }, 0);
+
+
 
             // RESET EVERYTHING
             bookingForm.reset();
+            // ✅ reset terms checkbox + disable button again
+            if (agreeTerms) agreeTerms.checked = false;
+            if (submitBookingBtn) submitBookingBtn.disabled = true;
+
             cart = {};
             itemInput.value = "";
             if (cartPopup) cartPopup.classList.add("hidden");
@@ -393,6 +470,49 @@ document.addEventListener("DOMContentLoaded", () => {
         popup.querySelector(".close").onclick = () => popup.remove();
         setTimeout(() => popup.remove(), 8000);
     }
+    // ================================
+    // RECEIPT MODAL HELPERS
+    // ================================
+    function openReceipt(receiptData) {
+        if (!receiptModal) return;
+
+        rId.textContent = receiptData.id;
+        rTime.textContent = receiptData.time;
+        rName.textContent = receiptData.name;
+        rPhone.textContent = receiptData.phone;
+        rLocation.textContent = receiptData.location;
+        rOccasion.textContent = receiptData.occasion;
+        rEventDate.textContent = receiptData.eventDate;
+
+        // Items
+        rItems.innerHTML = "";
+        receiptData.items.forEach((it) => {
+            const li = document.createElement("li");
+            li.innerHTML = `<span>${it.label}</span><span>₹${it.amount}</span>`;
+            rItems.appendChild(li);
+        });
+
+        rTotal.textContent = receiptData.total;
+
+        receiptModal.classList.remove("hidden");
+    }
+
+    function closeReceiptModal() {
+        receiptModal?.classList.add("hidden");
+    }
+
+    closeReceipt?.addEventListener("click", closeReceiptModal);
+
+    // click outside to close
+    receiptModal?.addEventListener("click", (e) => {
+        if (e.target === receiptModal) closeReceiptModal();
+    });
+
+    // print receipt
+    printReceipt?.addEventListener("click", () => {
+        window.print();
+    });
+
 
     // ================================
     // PROMO SLIDER (your same code)

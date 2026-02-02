@@ -122,20 +122,20 @@
 
 
 
- <!-- MULTI MODE TOGGLE (ENHANCED) -->
-<section class="section">
-    <div class="multi-toggle-card">
-        <label class="multi-switch">
-            <input type="checkbox" id="multiMode">
-            <span class="multi-slider"></span>
-        </label>
+    <!-- MULTI MODE TOGGLE (ENHANCED) -->
+    <section class="section">
+        <div class="multi-toggle-card">
+            <label class="multi-switch">
+                <input type="checkbox" id="multiMode">
+                <span class="multi-slider"></span>
+            </label>
 
-        <div class="multi-text">
-            <strong>Multiple Items Order</strong>
-            <span>Select more than one item in a single booking</span>
+            <div class="multi-text">
+                <strong>Multiple Items Order</strong>
+                <span>Select more than one item in a single booking</span>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 
 
     <!-- FLOWERS -->
@@ -320,8 +320,16 @@
 
             <input type="date" name="eventDate" required>
             <input type="text" id="item" name="item" placeholder="Selected Items" readonly>
+            <div class="terms-box">
+                <label class="terms-label">
+                    <input type="checkbox" id="agreeTerms" />
+                    I have read and agree to the
+                    <a href="privacy-terms.html" target="_blank">Terms & Conditions</a>
+                </label>
+            </div>
 
-            <button type="submit">Confirm Order</button>
+            <button id="submitBookingBtn" type="submit" disabled>Confirm Order</button>
+
         </form>
     </section>
 
@@ -358,6 +366,52 @@
 
         <button onclick="closeCart()">Close</button>
     </div>
+    <!--- recipet on popup card -->
+    <!-- ✅ RECEIPT MODAL -->
+    <div id="receiptModal" class="receipt-modal hidden">
+        <div class="receipt-card" id="receiptCard">
+            <div class="receipt-head">
+                <div>
+                    <h3>The Floral Hugs</h3>
+                    <p class="muted">Booking Receipt (Request)</p>
+                </div>
+                <button type="button" id="closeReceipt" class="receipt-close">✕</button>
+            </div>
+
+            <div class="receipt-meta">
+                <p><strong>Receipt ID:</strong> <span id="rId">-</span></p>
+                <p><strong>Date & Time:</strong> <span id="rTime">-</span></p>
+                <p><strong>Name:</strong> <span id="rName">-</span></p>
+                <p><strong>Phone:</strong> <span id="rPhone">-</span></p>
+                <p><strong>Location:</strong> <span id="rLocation">-</span></p>
+                <p><strong>Occasion:</strong> <span id="rOccasion">-</span></p>
+                <p><strong>Event Date:</strong> <span id="rEventDate">-</span></p>
+            </div>
+
+            <hr />
+
+            <div>
+                <h4>Items</h4>
+                <ul id="rItems" class="receipt-items"></ul>
+                <p class="receipt-total"><strong>Total:</strong> ₹<span id="rTotal">0</span></p>
+            </div>
+
+            <div class="receipt-note">
+                <p class="muted">
+                    ✅ This is a booking request receipt. Final confirmation will be shared on WhatsApp/Call.
+                </p>
+                <p class="muted">
+                    📸 Please take a screenshot of this receipt for reference.
+                </p>
+            </div>
+
+            <div class="receipt-actions">
+                <button type="button" id="printReceipt" class="btn">Print / Save</button>
+                <a class="btn" target="_blank" href="https://wa.me/918629885007">WhatsApp Us</a>
+            </div>
+        </div>
+    </div>
+
 
     <script src="script.js"></script>
 </body>
