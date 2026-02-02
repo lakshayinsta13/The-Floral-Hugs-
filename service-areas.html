@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Floral Hugs | Service Areas</title>
+    <link rel="stylesheet" href="style.css" />
+
+    <style>
+        /* Page-specific layout (keeps your main CSS same) */
+        .areas-page {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 28px 16px 40px;
+        }
+
+        .areas-hero {
+            background: linear-gradient(135deg, #fff3f7, #ffffff);
+            border: 1px solid rgba(232, 74, 122, 0.18);
+            border-radius: 18px;
+            padding: 18px;
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.06);
+            text-align: left;
+        }
+
+        .areas-hero h1 {
+            margin: 0;
+            color: #e84a7a;
+            font-size: 26px;
+            line-height: 1.2;
+        }
+
+        .areas-hero p {
+            margin: 8px 0 0;
+            color: #555;
+            font-size: 14px;
+        }
+
+        .areas-grid {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 18px;
+            margin-top: 18px;
+            align-items: start;
+        }
+
+        .areas-list {
+            background: #fff;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 16px;
+            padding: 14px;
+            position: sticky;
+            top: 88px;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+        }
+
+        .areas-list h3 {
+            margin: 0 0 8px;
+            font-size: 16px;
+            color: #222;
+        }
+
+        .areas-list a {
+            display: block;
+            padding: 10px 10px;
+            margin: 6px 0;
+            border-radius: 12px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 700;
+            background: rgba(232, 74, 122, 0.06);
+            border: 1px solid rgba(232, 74, 122, 0.12);
+        }
+
+        .areas-list a:hover {
+            background: rgba(232, 74, 122, 0.12);
+        }
+
+        .areas-content .card-box {
+            background: #fff;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 16px;
+            padding: 14px;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+            margin-bottom: 16px;
+            text-align: left;
+        }
+
+        .areas-content .card-box h2 {
+            margin: 0 0 8px;
+            font-size: 18px;
+            color: #222;
+        }
+
+        .areas-content .muted {
+            color: #666;
+            font-size: 13px;
+            margin: 0 0 10px;
+            line-height: 1.5;
+        }
+
+        .map-embed {
+            width: 100%;
+            height: 420px;
+            border: 0;
+            border-radius: 14px;
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 12px;
+            border-radius: 999px;
+            background: rgba(232, 74, 122, 0.08);
+            border: 1px solid rgba(232, 74, 122, 0.18);
+            color: #333;
+            font-weight: 700;
+            font-size: 13px;
+            text-decoration: none;
+        }
+
+        /* Mobile */
+        @media (max-width: 850px) {
+            .areas-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .areas-list {
+                position: static;
+            }
+
+            .map-embed {
+                height: 320px;
+            }
+
+            .areas-hero h1 {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR (same style as your site) -->
+    <header class="navbar">
+        <div class="logo">
+            <img src="images/logo.png" alt="The Floral Hugs Logo">
+            <span>The Floral Hugs</span>
+        </div>
+        <nav>
+            <a href="index.html#home">Home</a>
+            <a href="index.html#flowers">Flowers</a>
+            <a href="index.html#cakes">Cakes</a>
+            <a href="index.html#order">Order</a>
+            <a href="service-areas.html">Service Areas</a>
+        </nav>
+    </header>
+
+    <main class="areas-page">
+        <section class="areas-hero">
+            <h1>Delivery Service Areas</h1>
+            <p>
+                We currently deliver within the highlighted circle. For same-day / urgent orders, please confirm on
+                WhatsApp.
+            </p>
+
+            <div class="quick-actions">
+                <a class="chip" href="https://wa.me/918629885007" target="_blank">💬 WhatsApp Confirm</a>
+                <a class="chip" href="index.html#order">🧾 Book Now</a>
+            </div>
+        </section>
+
+        <section class="areas-grid">
+            <!-- LEFT LIST -->
+            <aside class="areas-list">
+                <h3>Places We Serve</h3>
+                <a href="#bhawarna">Bhawarna</a>
+                <a href="#palampur">Palampur</a>
+                <a href="#droh">Droh</a>
+                <a href="#paror">Paror</a>
+            </aside>
+
+            <!-- RIGHT CONTENT -->
+            <div class="areas-content">
+                <div id="bhawarna" class="card-box">
+                    <h2>Bhawarna (HP)</h2>
+                    <p class="muted">
+                        The highlighted circle shows our current delivery coverage around Bhawarna.
+                        If your area is near the boundary, confirm once on WhatsApp.
+                    </p>
+
+                    <iframe class="map-embed"
+                        src="https://www.google.com/maps/d/u/0/embed?mid=1_akocZVNNkCAHmlVAqillt-HI0ENmKw&ehbc=2E312F&noprof=1"
+                        loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+
+                </div>
+
+                <div id="palampur" class="card-box">
+                    <h2>Palampur (HP)</h2>
+                    <p class="muted">
+                        Delivery is available in Palampur and nearby locations that fall inside the highlighted circle.
+                    </p>
+                    <iframe class="map-embed"
+                        src="https://www.google.com/maps/d/u/0/embed?mid=1_akocZVNNkCAHmlVAqillt-HI0ENmKw&ehbc=2E312F&noprof=1"
+                        loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+
+                </div>
+
+                <div id="droh" class="card-box">
+                    <h2>Droh (HP)</h2>
+                    <p class="muted">
+                        If your exact locality is not clearly visible, share your location on WhatsApp and we’ll confirm
+                        delivery.
+                    </p>
+                    <iframe class="map-embed"
+                        src="https://www.google.com/maps/d/u/0/embed?mid=1_akocZVNNkCAHmlVAqillt-HI0ENmKw&ehbc=2E312F&noprof=1"
+                        loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+
+                </div>
+
+                <div id="paror" class="card-box">
+                    <h2>Paror (HP)</h2>
+                    <p class="muted">
+                        Delivery depends on availability & distance. Please confirm with our team for urgent or special
+                        orders.
+                    </p>
+                    <iframe class="map-embed"
+                        src="https://www.google.com/maps/d/u/0/embed?mid=1_akocZVNNkCAHmlVAqillt-HI0ENmKw&ehbc=2E312F&noprof=1"
+                        loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+
+                </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>
+            © 2026 The Floral Hugs • Mansimbal, HP (Mansimbal Market, near Petrol Pump) <br>
+            Powered by <strong>Aavi Cosmetics</strong>
+        </p>
+    </footer>
+
+</body>
+
+</html>
