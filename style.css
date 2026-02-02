@@ -785,3 +785,243 @@ footer {
     margin-top: 12px;
     flex-wrap: wrap;
 }
+
+/* =====================================================
+   ✅ RESPONSIVE PATCH (Better Mobile + All Devices)
+   Paste this at the END of style.css
+===================================================== */
+
+/* ---------- 1) Make images responsive ---------- */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* ---------- 2) Navbar: clean on mobile ---------- */
+@media (max-width: 900px) {
+    .navbar {
+        padding: 12px 16px;
+        gap: 12px;
+    }
+
+    .logo img {
+        height: 38px;
+    }
+
+    .logo span {
+        font-size: 18px;
+    }
+
+    .navbar nav a {
+        margin-left: 14px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 600px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 12px 14px;
+    }
+
+    .navbar nav {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 8px;
+    }
+
+    .navbar nav a {
+        margin-left: 0;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: rgba(232, 74, 122, 0.08);
+        border: 1px solid rgba(232, 74, 122, 0.18);
+        font-size: 13px;
+    }
+}
+
+/* ---------- 3) Hero: better height + text + button ---------- */
+.hero img {
+    object-fit: cover;
+    /* makes hero image look premium */
+}
+
+@media (max-width: 768px) {
+    .hero {
+        height: 360px;
+    }
+
+    .hero-text {
+        width: calc(100% - 24px);
+        padding: 18px 14px;
+        border-radius: 14px;
+        backdrop-filter: blur(4px);
+    }
+
+    .hero-text h1 {
+        font-size: 22px;
+        line-height: 1.2;
+    }
+
+    .hero-text p {
+        font-size: 14px;
+        margin-bottom: 14px;
+    }
+
+    /* ✅ Hero button looks premium */
+    .hero-text .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        max-width: 260px;
+        margin: 0 auto;
+        padding: 12px 18px;
+        font-size: 15px;
+        border-radius: 999px;
+        box-shadow: 0 10px 18px rgba(0, 0, 0, 0.12);
+    }
+}
+
+/* ---------- 4) Sections padding fix ---------- */
+@media (max-width: 768px) {
+    .section {
+        padding: 36px 14px;
+    }
+
+    .section h2 {
+        font-size: 24px;
+        margin-bottom: 24px;
+    }
+}
+
+/* ---------- 5) Grid + cards better on phones ---------- */
+@media (max-width: 600px) {
+    .grid {
+        grid-template-columns: 1fr;
+        /* 1 column on small phones */
+        gap: 16px;
+    }
+
+    .card {
+        padding: 14px;
+        border-radius: 16px;
+    }
+
+    .card img {
+        height: 190px;
+        border-radius: 12px;
+    }
+
+    .card h3 {
+        font-size: 16px;
+    }
+
+    .price {
+        font-size: 17px;
+    }
+
+    .product-btn {
+        border-radius: 14px;
+        padding: 12px;
+        font-size: 15px;
+    }
+}
+
+/* ---------- 6) Booking form: perfect mobile layout ---------- */
+@media (max-width: 768px) {
+    #order {
+        margin: 18px 12px;
+        padding: 22px 14px;
+        border-radius: 14px;
+    }
+
+    #bookingForm {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    #bookingForm button {
+        grid-column: 1;
+        padding: 14px;
+        font-size: 16px;
+        border-radius: 12px;
+    }
+
+    #bookingForm input {
+        padding: 12px 12px;
+        border-radius: 10px;
+        font-size: 15px;
+    }
+
+    /* ✅ Terms box readable on mobile */
+    .terms-box {
+        padding: 12px;
+    }
+
+    .terms-label {
+        font-size: 13px;
+        gap: 8px;
+    }
+}
+
+/* ---------- 7) WhatsApp float: avoid overlap with cart ---------- */
+@media (max-width: 600px) {
+    .whatsapp-float {
+        bottom: 18px;
+        right: 16px;
+        width: 52px;
+        height: 52px;
+        line-height: 52px;
+        font-size: 24px;
+    }
+
+    .cart-button {
+        right: 16px;
+        bottom: 84px;
+        /* keeps it above WhatsApp */
+    }
+
+    .cart-popup {
+        right: 12px;
+        bottom: 140px;
+    }
+}
+
+/* ---------- 8) Notice bar padding on mobile ---------- */
+@media (max-width: 768px) {
+    .notice-wrap {
+        padding: 16px 12px;
+    }
+
+    .notice {
+        padding: 14px;
+        border-radius: 14px;
+    }
+
+    .notice-title {
+        font-size: 16px;
+    }
+
+    .notice-list li {
+        font-size: 13px;
+    }
+}
+
+/* ---------- 9) Receipt modal better on mobile ---------- */
+@media (max-width: 600px) {
+    .receipt-card {
+        max-width: 100%;
+        border-radius: 14px;
+        padding: 14px;
+    }
+
+    .receipt-actions .btn {
+        width: 100%;
+        text-align: center;
+    }
+}
