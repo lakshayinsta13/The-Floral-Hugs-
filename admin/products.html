@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Product Management</title>
+    <link rel="stylesheet" href="admin.css" />
+</head>
+
+<body>
+    <h1>📦 Product Management</h1>
+    <p><a href="admin.html">⬅ Back to Bookings</a></p>
+
+    <section>
+        <form id="productForm">
+            <div style="display:flex; flex-wrap:wrap; gap:12px; max-width:800px; align-items:center;">
+                <input type="hidden" id="prodId" />
+                <input type="text" id="prodName" placeholder="Product Name" required />
+                <input type="text" id="prodQtyType" placeholder="Quantity Type (e.g. Kg, pcs)" />
+                <input type="number" id="prodPrice" placeholder="Price" required />
+                <input type="number" id="prodDiscount" placeholder="Discount amount (optional)" />
+                <input type="text" id="prodDetails" placeholder="Details / offer text" />
+                <label style="display:flex; align-items:center; gap:6px;">
+                    <input type="checkbox" id="prodPublished" checked /> Published
+                </label>
+                <input type="file" id="prodFile" accept="image/*" capture="environment" />
+                <input type="hidden" id="prodImg" />
+                <img id="prodPreview" alt="Preview" style="max-width:120px; max-height:120px; object-fit:cover; display:none;" />
+                <button type="submit" id="productSubmitBtn">Add Product</button>
+                <button type="button" id="cancelEdit" style="display:none;">Cancel</button>
+            </div>
+        </form>
+    </section>
+
+    <section>
+        <h2>Published Products</h2>
+        <table id="publishedTable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Qty Type</th>
+                    <th>Price ₹</th>
+                    <th>Discount ₹</th>
+                    <th>Details</th>
+                    <th>Image</th>
+                    <th>Published</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <h2>Unpublished Products</h2>
+        <table id="unpublishedTable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Qty Type</th>
+                    <th>Price ₹</th>
+                    <th>Discount ₹</th>
+                    <th>Details</th>
+                    <th>Image</th>
+                    <th>Published</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </section>
+
+    <script src="products.js"></script>
+</body>
+
+</html>

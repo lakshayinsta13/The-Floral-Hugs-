@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8" />
-    <title>The Floral Hugs | Flowers & Cakes Delivery</title>
+    <title>The Floral Hugs | Products Delivery</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
 </head>
@@ -16,22 +16,21 @@
     <!-- NAVBAR -->
     <header class="navbar">
         <div class="logo">
-            <img src="images/logo.png" alt="The Floral Hugs Logo">
-            <span>The Floral Hugs</span>
+            <a href="#home" style="text-decoration:none; color:inherit; display:flex; align-items:center;">
+                <img src="images/logo.png" alt="The Floral Hugs Logo">
+                <span>The Floral Hugs</span>
+            </a>
         </div>
         <nav>
-            <a href="#home">Home</a>
-            <a href="#flowers">Flowers</a>
-            <a href="#cakes">Cakes</a>
-            <a href="#order">Order</a>
+            <a href="#products">Products</a>
         </nav>
     </header>
 
     <!-- HERO -->
     <section id="home" class="hero">
-        <img src="images/pexels-brett-sayles-992734.jpg" alt="Flowers & Cakes">
+        <img src="images/pexels-brett-sayles-992734.jpg" alt="Products">
         <div class="hero-text">
-            <h1>Flowers & Cakes Delivered With Love</h1>
+            <h1>Beautiful Products Delivered With Love</h1>
             <p>Home delivery available in Palampur, Kangra (HP)</p>
             <a href="service-areas.html" class="btn">Service Areas</a>
 
@@ -73,173 +72,15 @@
     </section>
 
 
-    <!-- FLOWERS -->
-    <section id="flowers" class="section">
-        <h2>Flower Bouquets</h2>
-        <div class="grid">
-
-            <!-- 1 -->
-            <div class="card">
-                <img src="images/B3 RED ROSE.png" alt="Red Rose Bouquet">
-                <h3 class="product-title" data-base="Red Rose Bouquet">Red Rose Bouquet</h3>
-                <p class="price">₹699</p>
-
-                <div class="qty-row" data-name="Red Rose Bouquet" data-price="699">
-                    <button type="button" class="qty-btn minus">−</button>
-                    <span class="qty-value">1</span>
-                    <button type="button" class="qty-btn plus">+</button>
-                </div>
-
-                <button type="button" class="product-btn" data-name="Red Rose Bouquet" data-price="699">
-                    Book Now
-                </button>
-            </div>
-
-            <!-- 2 -->
-            <div class="card">
-                <img src="images/B4 H.png" alt="Hand-Tied Rose Bouquet">
-                <h3 class="product-title" data-base="Hand-Tied Rose Bouquet">Hand-Tied Rose Bouquet</h3>
-                <p class="price">₹799</p>
-
-                <div class="qty-row" data-name="Hand-Tied Rose Bouquet" data-price="799">
-                    <button type="button" class="qty-btn minus">−</button>
-                    <span class="qty-value">1</span>
-                    <button type="button" class="qty-btn plus">+</button>
-                </div>
-
-                <button type="button" class="product-btn" data-name="Hand-Tied Rose Bouquet" data-price="799">
-                    Book Now
-                </button>
-            </div>
-
-            <!-- 3 -->
-            <div class="card">
-                <img src="images/multy flowr b1.png" alt="Mixed Flower Bouquet">
-                <h3 class="product-title" data-base="Mixed Flower Bouquet">Mixed Flower Bouquet</h3>
-                <p class="price">₹899</p>
-
-                <div class="qty-row" data-name="Mixed Flower Bouquet" data-price="899">
-                    <button type="button" class="qty-btn minus">−</button>
-                    <span class="qty-value">1</span>
-                    <button type="button" class="qty-btn plus">+</button>
-                </div>
-
-                <button type="button" class="product-btn" data-name="Mixed Flower Bouquet" data-price="899">
-                    Book Now
-                </button>
-            </div>
-
-            <!-- 4 -->
-            <div class="card">
-                <img src="images/F2.png" alt="Premium Floral Bouquet">
-                <h3 class="product-title" data-base="Premium Floral Bouquet">Premium Floral Bouquet</h3>
-                <p class="price">₹1099</p>
-
-                <div class="qty-row" data-name="Premium Floral Bouquet" data-price="1099">
-                    <button type="button" class="qty-btn minus">−</button>
-                    <span class="qty-value">1</span>
-                    <button type="button" class="qty-btn plus">+</button>
-                </div>
-
-                <button type="button" class="product-btn" data-name="Premium Floral Bouquet" data-price="1099">
-                    Book Now
-                </button>
-            </div>
-
+    <!-- PRODUCTS -->
+    <section id="products" class="section">
+        <h2>Our Products</h2>
+        <div id="loadingOverlay" class="loading-overlay" style="display:none;">Loading products...</div>
+        <div class="grid" id="productsGrid">
+            <!-- cards injected dynamically -->
         </div>
     </section>
 
-    <!-- CAKES -->
-    <section id="cakes" class="section bg-light">
-        <h2>Cakes</h2>
-        <div class="grid">
-
-            <!-- 1 -->
-            <div class="card">
-                <img src="images/Black forest cake.png" alt="Black Forest Cake">
-
-                <h3 class="product-title" data-base="Black Forest Cake" data-unit="Kg">
-                    Black Forest Cake (<span class="unit-count">1</span> Kg)
-                </h3>
-
-                <p class="price">₹999</p>
-
-                <div class="qty-row" data-name="Black Forest Cake" data-price="999">
-                    <button type="button" class="qty-btn minus">−</button>
-                    <span class="qty-value">1</span>
-                    <button type="button" class="qty-btn plus">+</button>
-                </div>
-
-                <button type="button" class="product-btn" data-name="Black Forest Cake" data-price="999">
-                    Book Now
-                </button>
-            </div>
-
-            <!-- 2 -->
-            <div class="card">
-                <img src="images/Chocolate drip cake.png" alt="Chocolate Drip Cake">
-
-                <h3 class="product-title" data-base="Chocolate Drip Cake" data-unit="Kg">
-                    Chocolate Drip Cake (<span class="unit-count">1</span> Kg)
-                </h3>
-
-                <p class="price">₹1099</p>
-
-                <div class="qty-row" data-name="Chocolate Drip Cake" data-price="1099">
-                    <button type="button" class="qty-btn minus">−</button>
-                    <span class="qty-value">1</span>
-                    <button type="button" class="qty-btn plus">+</button>
-                </div>
-
-                <button type="button" class="product-btn" data-name="Chocolate Drip Cake" data-price="1099">
-                    Book Now
-                </button>
-            </div>
-
-            <!-- 3 -->
-            <div class="card">
-                <img src="images/red velvet cake.png" alt="Red Velvet Cake">
-
-                <h3 class="product-title" data-base="Red Velvet Cake" data-unit="Kg">
-                    Red Velvet Cake (<span class="unit-count">1</span> Kg)
-                </h3>
-
-                <p class="price">₹1099</p>
-
-                <div class="qty-row" data-name="Red Velvet Cake" data-price="1099">
-                    <button type="button" class="qty-btn minus">−</button>
-                    <span class="qty-value">1</span>
-                    <button type="button" class="qty-btn plus">+</button>
-                </div>
-
-                <button type="button" class="product-btn" data-name="Red Velvet Cake" data-price="1099">
-                    Book Now
-                </button>
-            </div>
-
-            <!-- 4 -->
-            <div class="card">
-                <img src="images/Strawberry cake.png" alt="Strawberry Cream Cake">
-
-                <h3 class="product-title" data-base="Strawberry Cream Cake" data-unit="Kg">
-                    Strawberry Cream Cake (<span class="unit-count">1</span> Kg)
-                </h3>
-
-                <p class="price">₹899</p>
-
-                <div class="qty-row" data-name="Strawberry Cream Cake" data-price="899">
-                    <button type="button" class="qty-btn minus">−</button>
-                    <span class="qty-value">1</span>
-                    <button type="button" class="qty-btn plus">+</button>
-                </div>
-
-                <button type="button" class="product-btn" data-name="Strawberry Cream Cake" data-price="899">
-                    Book Now
-                </button>
-            </div>
-
-        </div>
-    </section>
     <!-- INFO / NOTICE BAR -->
     <section class="notice-wrap" aria-label="Important booking info">
         <div class="notice">

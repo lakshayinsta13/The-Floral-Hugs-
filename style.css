@@ -239,6 +239,18 @@ body {
     display: flex;
     flex-direction: column;
     height: 100%;
+    position: relative; /* for badge */
+}
+
+.discount-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: #e84a7a;
+    color: #fff;
+    font-size: 13px;
+    padding: 4px 6px;
+    border-radius: 4px;
 }
 
 .card:hover {
@@ -254,6 +266,20 @@ body {
     /* keep centered */
     border-radius: 14px;
     background: #f6f6f6;
+    loading: lazy;
+}
+/* loader for products grid */
+#products { position: relative; }
+.loading-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.85);
+    font-size: 18px;
+    color: #333;
+    z-index: 5;
 }
 
 
@@ -268,6 +294,23 @@ body {
     font-weight: 800;
     margin-bottom: 12px;
     font-size: 18px;
+}
+
+.show-price {
+    color: #999;
+    text-decoration: line-through;
+    margin-left: 6px;
+    font-weight: 400;
+}
+
+.offer {
+    background: #ffe0e6;
+    color: #e84a7a;
+    font-size: 13px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 8px;
 }
 
 /* =====================================================

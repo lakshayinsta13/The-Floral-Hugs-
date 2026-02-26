@@ -6,6 +6,9 @@ const SUPABASE_ANON_KEY =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im11Y2l5dWFweHdrbGNoZHZraW10Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU5NDcxNTEsImV4cCI6MjA4MTUyMzE1MX0.uh0UWRzpfqzUAB_xKnny-Zp_ncHevH10w4vLDNDEEDU";
 
 const TABLE_NAME = "bookings";
+const PRODUCTS_TABLE = "products";
+
+let products = []; // dynamic list coming from DB
 
 // ================================
 // DOM READY
@@ -36,7 +39,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-    const productButtons = document.querySelectorAll(".product-btn");
     const multiToggle = document.getElementById("multiMode");
 
     const cartBtn = document.getElementById("cartButton");
@@ -48,6 +50,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const qtyRows = document.querySelectorAll(".qty-row");
 
     if (!bookingForm || !itemInput || !multiToggle) return;
+
+    // load product catalogue from backend
+    loadProducts();
     // ================================
     // TERMS CHECKBOX -> ENABLE SUBMIT
     // ================================
@@ -201,13 +206,172 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function updateButtons() {
-        productButtons.forEach((btn) => {
+        const btns = document.querySelectorAll(".product-btn");
+        btns.forEach((btn) => {
             const key = btn.dataset.name || "";
             if (!multiMode) {
                 btn.textContent = "Book Now";
             } else {
                 btn.textContent = cart[key] ? "Added ✓ (Update Qty)" : "Add Item";
             }
+        });
+    }
+
+    // ================================
+    // PRODUCT FETCH / RENDER
+    // ================================
+    async function loadProducts() {
+        const overlay = document.getElementById('loadingOverlay');
+        if (overlay) overlay.style.display = 'flex';
+        try {
+            const baseUrl = `${SUPABASE_URL}/rest/v1/${PRODUCTS_TABLE}`;
+            // first attempt: server filter using publish_status OR legacy published boolean
+            let res = await fetch(`${baseUrl}?or=(publish_status.eq.Published,published.eq.true)&order=id.asc`, {
+                headers: {
+                    apikey: SUPABASE_ANON_KEY,
+                    Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+                },
+            });
+            let json = await res.json();
+
+            // if response is an error and mentions missing column, retry without published
+            if (!Array.isArray(json) && json && json.code === '42703') {
+                console.warn('published column missing, retrying without server filter');
+                res = await fetch(`${baseUrl}?order=id.asc`, {
+                    headers: {
+                        apikey: SUPABASE_ANON_KEY,
+                        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+                    },
+                });
+                json = await res.json();
+                if (Array.isArray(json)) {
+                    // client‑side filter by publish_status
+                    products = json.filter((p) => p.publish_status === 'Published');
+                } else {
+                    console.error('unexpected products response on retry', json);
+                    products = [];
+                }
+            } else if (Array.isArray(json)) {
+                products = json;
+            } else {
+                console.error('unexpected products response', json);
+                products = [];
+            }
+
+            renderProducts();
+        } catch (err) {
+            console.error("Failed to load products", err);
+        } finally {
+            if (overlay) overlay.style.display = 'none';
+        }
+    }
+
+    function renderProducts() {
+        const grid = document.getElementById("productsGrid");
+        if (!grid) return;
+        grid.innerHTML = "";
+
+        if (!Array.isArray(products)) {
+            console.warn('renderProducts called with non-array', products);
+            products = [];
+        }
+
+        products.forEach((p) => {
+            grid.insertAdjacentHTML("beforeend", createCardHTML(p));
+        });
+        setupProductListeners();
+        updateButtons();
+    }
+
+    function createCardHTML(p) {
+        const originalPrice = (p.price || 0) + (p.discount || 0);
+        const showPriceHTML = p.discount && p.discount > 0 ? `<span class="show-price">₹${originalPrice}</span>` : "";
+        const offerHTML = p.details ? `<div class="offer">${p.details}</div>` : "";
+        const imgHTML = p.image_url ? `<img src="${p.image_url}" alt="${p.name}">` : "";
+        const qtyType = p.quantity_type || '';
+        const titleAttrs = `data-base="${p.name}" data-unit="${qtyType}"`;
+        const titleText = p.name;
+        const qtyTitlePart = qtyType ? ` (<span class="unit-count">1</span> ${qtyType})` : '';
+
+        const discountBadge = p.discount && p.discount > 0 ? `<div class="discount-badge">-₹${p.discount}</div>` : "";
+        return `
+        <div class="card">
+            ${discountBadge}
+            ${imgHTML}
+            <h3 class="product-title" ${titleAttrs}>${titleText}${qtyTitlePart}</h3>
+            <p class="price">
+                ₹${p.price}
+                ${showPriceHTML}
+            </p>
+            ${offerHTML}
+            <div class="qty-row" data-name="${p.name}" data-price="${p.price}">
+                <button type="button" class="qty-btn minus">−</button>
+                <span class="qty-value">1</span>
+                <button type="button" class="qty-btn plus">+</button>
+            </div>
+            <button type="button" class="product-btn" data-name="${p.name}" data-price="${p.price}">
+                Book Now
+            </button>
+        </div>
+        `;
+    }
+
+    function setupProductListeners() {
+        const rows = document.querySelectorAll(".qty-row");
+        rows.forEach((row) => {
+            ensureQtyDefault(row);
+            const plus = row.querySelector(".plus");
+            const minus = row.querySelector(".minus");
+            plus?.addEventListener("click", () => {
+                const current = getQtyFromRow(row);
+                setQtyToRow(row, current + 1);
+            });
+            minus?.addEventListener("click", () => {
+                const current = getQtyFromRow(row);
+                setQtyToRow(row, current - 1);
+            });
+        });
+
+        const btns = document.querySelectorAll(".product-btn");
+        btns.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                const card = btn.closest(".card");
+                const row = card?.querySelector(".qty-row");
+
+                const key = btn.dataset.name || "";
+                const price = Number(btn.dataset.price || 0);
+                const qty = row ? getQtyFromRow(row) : 1;
+
+                const meta = row
+                    ? getCardMetaFromRow(row)
+                    : { isCake: false, unitLabel: null, baseNameFromTitle: null };
+
+                const cleanName = meta.isCake ? (meta.baseNameFromTitle || key) : key;
+
+                const itemObj = {
+                    key,
+                    name: cleanName,
+                    price,
+                    qty,
+                    isCake: meta.isCake,
+                    unitLabel: meta.unitLabel,
+                };
+
+                if (!multiMode) {
+                    cart = {};
+                    cart[key] = itemObj;
+
+                    updateCartUI();
+                    updateButtons();
+
+                    document.getElementById("order")?.scrollIntoView({ behavior: "smooth" });
+                    return;
+                }
+
+                cart[key] = itemObj;
+                updateCartUI();
+                updateButtons();
+            });
         });
     }
 
@@ -273,54 +437,8 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // ================================
-    // PRODUCT BUTTON CLICK
-    // - reads qty from UI
-    // - single mode: goes to booking
-    // - multi mode: add/update cart
-    // ================================
-    productButtons.forEach((btn) => {
-        btn.addEventListener("click", () => {
-            const card = btn.closest(".card");
-            const row = card?.querySelector(".qty-row");
+    // product button handling is attached after products render
 
-            const key = btn.dataset.name || "";
-            const price = Number(btn.dataset.price || 0);
-            const qty = row ? getQtyFromRow(row) : 1;
-
-            const meta = row
-                ? getCardMetaFromRow(row)
-                : { isCake: false, unitLabel: null, baseNameFromTitle: null };
-
-            const cleanName = meta.isCake ? (meta.baseNameFromTitle || key) : key;
-
-            const itemObj = {
-                key,
-                name: cleanName,
-                price,
-                qty,
-                isCake: meta.isCake,
-                unitLabel: meta.unitLabel,
-            };
-
-            if (!multiMode) {
-                cart = {};
-                cart[key] = itemObj;
-
-                updateCartUI();
-                updateButtons();
-
-                // scroll only in single mode
-                document.getElementById("order")?.scrollIntoView({ behavior: "smooth" });
-                return;
-            }
-
-            // multi mode
-            cart[key] = itemObj;
-            updateCartUI();
-            updateButtons();
-        });
-    });
 
     // ================================
     // CART TOGGLE (FIXED)
