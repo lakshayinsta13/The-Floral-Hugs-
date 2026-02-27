@@ -24,6 +24,14 @@ document.addEventListener("DOMContentLoaded", () => {
     if (exportBtn) {
         exportBtn.addEventListener("click", exportToExcel);
     }
+
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+            if (window.adminLogout) window.adminLogout();
+            else location.href = 'login.html';
+        });
+    }
 });
 
 // ================================

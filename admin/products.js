@@ -25,6 +25,17 @@ async function loadAllProducts() {
     }
 }
 
+// attach logout handler if button present
+function initLogoutButton() {
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+            if (window.adminLogout) window.adminLogout();
+            else location.href = 'login.html';
+        });
+    }
+}
+
 function renderProductsTable() {
     // cache DOM elements
     const pubBody = document.querySelector('#publishedTable tbody');
@@ -118,6 +129,7 @@ async function deleteProduct(id) {
 
 document.addEventListener("DOMContentLoaded", () => {
     loadAllProducts();
+    initLogoutButton();
 
     const productForm = document.getElementById("productForm");
     const prodFileInput = document.getElementById('prodFile');
