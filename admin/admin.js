@@ -13,6 +13,16 @@ const TABLE = "bookings";
 // ================================
 let allBookings = [];
 
+// simple HTML escape to avoid injecting raw values into markup
+function escapeHtml(input) {
+    if (input === null || input === undefined) return "";
+    return String(input)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/\"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+}
 // ================================
 // INIT
 // ================================
@@ -128,22 +138,22 @@ function renderTable(status, tbodyId, showActions = false) {
     }
 
     rows.forEach(b => {
-        tbody.innerHTML += `
-      <tr>
-        <td>${b.name}</td>
-        <td>${b.item}</td>
-        <td>${b.event_type}</td>
-        <td>${b.event_date}</td>
-        <td>${b.phone_no}</td>
-        ${showActions
-                ? `<td>
-                <button class="accept" data-id="${b.id}">Accept</button>
-                <button class="reject" data-id="${b.id}">Reject</button>
-              </td>`
-                : ""
-            }
-      </tr>
-    `;
+                tbody.innerHTML += `
+            <tr>
+                <td data-label="Name">${escapeHtml(b.name)}</td>
+                <td data-label="Item">${escapeHtml(b.item)}</td>
+                <td data-label="Event">${escapeHtml(b.event_type)}</td>
+                <td data-label="Date">${escapeHtml(b.event_date)}</td>
+                <td data-label="Phone">${escapeHtml(b.phone_no)}</td>
+                ${showActions
+                                ? `<td data-label="Actions">
+                                <button class="accept" data-id="${b.id}">Accept</button>
+                                <button class="reject" data-id="${b.id}">Reject</button>
+                            </td>`
+                                : ""
+                        }
+            </tr>
+        `;
     });
 }
 

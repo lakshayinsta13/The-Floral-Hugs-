@@ -1,5 +1,5 @@
 /* ================================
-   ROOT & BODY
+   ROOT & BODY - MOBILE FIRST
 ================================ */
 * {
     box-sizing: border-box;
@@ -9,154 +9,947 @@ body {
     font-family: "Inter", "Segoe UI", system-ui, sans-serif;
     background: radial-gradient(circle at top, #eef2ff, #f8fafc);
     margin: 0;
-    padding: 32px;
+    padding: 14px;
     color: #0f172a;
+}
+
+@media (min-width: 640px) {
+    body {
+        padding: 18px;
+    }
+}
+
+@media (min-width: 1024px) {
+    body {
+        padding: 32px;
+    }
 }
 
 /* ================================
    PAGE CONTAINER
 ================================ */
-body>* {
+body > * {
     max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
 }
 
 /* ================================
-   HEADER
+   HEADER - MOBILE FIRST
 ================================ */
 h1 {
     display: flex;
     align-items: center;
-    gap: 12px;
-    font-size: 32px;
+    gap: 8px;
+    font-size: 18px;
     font-weight: 800;
+    margin: 0 0 8px 0;
+    flex-wrap: wrap;
+    color: #1f2937;
+    line-height: 1.3;
+}
+
+@media (min-width: 640px) {
+    h1 {
+        font-size: 24px;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+}
+
+@media (min-width: 1024px) {
+    h1 {
+        font-size: 32px;
+        gap: 12px;
+        margin-bottom: 12px;
+    }
+}
+
+/* Logout button */
+#logoutBtn {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: #fff;
+    padding: 9px 13px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    min-height: 38px;
+    white-space: nowrap;
+}
+
+@media (min-width: 640px) {
+    #logoutBtn {
+        padding: 8px 14px;
+        font-size: 12px;
+        min-height: 38px;
+    }
+}
+
+@media (min-width: 1024px) {
+    #logoutBtn {
+        padding: 8px 16px;
+        font-size: 13px;
+    }
+}
+
+#logoutBtn:hover {
+    transform: translateY(-2px);
+}
+
+#logoutBtn:active {
+    transform: scale(0.95);
+}
+
+/* Header wrapper */
+div[style*="display:flex"][style*="justify-content:space-between"] {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
     margin-bottom: 8px;
 }
 
+@media (min-width: 640px) {
+    div[style*="display:flex"][style*="justify-content:space-between"] {
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+}
+
+@media (min-width: 1024px) {
+    div[style*="display:flex"][style*="justify-content:space-between"] {
+        gap: 12px;
+    }
+}
+
+@media (max-width: 640px) {
+    div[style*="display:flex"][style*="justify-content:space-between"] h1 {
+        flex: 1;
+        min-width: 0;
+    }
+    
+    div[style*="display:flex"][style*="justify-content:space-between"] #logoutBtn {
+        flex-shrink: 0;
+    }
+}
+
+/* Navigation links */
+p {
+    margin: 8px 0 12px;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+@media (min-width: 640px) {
+    p {
+        margin-bottom: 14px;
+        font-size: 13px;
+    }
+}
+
+@media (min-width: 1024px) {
+    p {
+        font-size: 14px;
+        margin-bottom: 16px;
+    }
+}
+
+p a {
+    color: #4f46e5;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+
+p a:hover {
+    color: #6366f1;
+    text-decoration: underline;
+}
+
 /* ================================
-   EXPORT BUTTON
+   EXPORT & TOGGLE - MOBILE FIRST
 ================================ */
 .export {
-    margin: 16px 0 28px;
+    margin: 10px 0 14px;
+}
+
+@media (min-width: 640px) {
+    .export {
+        margin: 14px 0 18px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .export {
+        margin: 16px 0 28px;
+    }
 }
 
 .export button {
     background: linear-gradient(135deg, #6366f1, #4f46e5);
     color: #fff;
-    padding: 10px 18px;
+    padding: 12px 16px;
     border-radius: 999px;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
-    box-shadow: 0 10px 30px rgba(79, 70, 229, 0.35);
+    box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+    width: 100%;
+    min-height: 42px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+@media (min-width: 640px) {
+    .export button {
+        width: auto;
+        min-height: auto;
+        padding: 10px 18px;
+        font-size: 13px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .export button {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
 }
 
 .export button:hover {
     transform: translateY(-2px);
 }
 
-/* ================================
-   WHATSAPP TOGGLE BAR
-================================ */
+.export button:active {
+    transform: scale(0.95);
+}
+
+/* Toggle bar */
 .toggle-bar {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     background: #ffffff;
-    padding: 14px 18px;
-    border-radius: 14px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
-    margin-bottom: 30px;
+    padding: 12px 12px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    margin-bottom: 12px;
     font-weight: 600;
+    font-size: 12px;
+    flex-wrap: wrap;
+    border: 1px solid #e5e7eb;
+}
+
+@media (min-width: 640px) {
+    .toggle-bar {
+        padding: 13px 15px;
+        margin-bottom: 15px;
+        font-size: 13px;
+        gap: 11px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .toggle-bar {
+        padding: 14px 18px;
+        margin-bottom: 30px;
+        font-size: 14px;
+        gap: 12px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+    }
 }
 
 /* ================================
-   SECTION CARD
+   SECTION CARD - MOBILE FIRST
 ================================ */
 section {
     background: #ffffff;
-    padding: 22px 22px 26px;
-    border-radius: 18px;
-    box-shadow: 0 14px 40px rgba(15, 23, 42, 0.08);
-    margin-bottom: 36px;
+    padding: 12px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.08);
+    margin-bottom: 12px;
+    overflow-x: auto;
 }
 
-/* ================================
-   SECTION HEADINGS
-================================ */
+@media (min-width: 640px) {
+    section {
+        padding: 16px;
+        border-radius: 12px;
+        margin-bottom: 16px;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+    }
+}
+
+@media (min-width: 1024px) {
+    section {
+        padding: 22px 22px 26px;
+        border-radius: 18px;
+        margin-bottom: 36px;
+        box-shadow: 0 14px 40px rgba(15, 23, 42, 0.08);
+    }
+}
+
 section h2 {
     display: flex;
     align-items: center;
-    gap: 10px;
-    font-size: 20px;
+    gap: 8px;
+    font-size: 15px;
     font-weight: 700;
-    margin-bottom: 18px;
+    margin: 0 0 12px 0;
+    color: #1f2937;
+    line-height: 1.4;
+}
+
+@media (min-width: 640px) {
+    section h2 {
+        font-size: 17px;
+        gap: 10px;
+        margin-bottom: 14px;
+    }
+}
+
+@media (min-width: 1024px) {
+    section h2 {
+        font-size: 20px;
+        gap: 10px;
+        margin-bottom: 18px;
+    }
 }
 
 /* ================================
-   TABLE
+   TABLE - MOBILE FIRST (CARD LAYOUT)
 ================================ */
 table {
     width: 100%;
     border-collapse: collapse;
-    overflow: hidden;
 }
 
-th {
-    background: #f1f5f9;
-    padding: 14px 16px;
-    font-size: 13px;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: #475569;
-    text-align: left;
+/* Mobile: Card-based layout */
+@media (max-width: 640px) {
+    table {
+        display: block;
+        border: 0;
+    }
+    
+    thead {
+        display: none;
+    }
+    
+    tbody {
+        display: block;
+        margin: 0;
+        padding: 0;
+    }
+    
+    tr {
+        display: block;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        background: #fff;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        padding: 12px;
+    }
+    
+    td {
+        display: grid;
+        grid-template-columns: 75px 1fr;
+        gap: 8px;
+        text-align: left;
+        padding: 6px 0;
+        border: none;
+        align-items: start;
+        border-bottom: 1px solid #f1f5f9;
+        font-size: 12px;
+        line-height: 1.5;
+    }
+    
+    td:last-child {
+        border-bottom: none;
+    }
+    
+    td::before {
+        content: attr(data-label);
+        font-weight: 700;
+        color: #4f46e5;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+    }
+    
+    tr:hover td {
+        background: transparent;
+    }
 }
 
-td {
-    padding: 14px 16px;
-    font-size: 14px;
-    border-top: 1px solid #e5e7eb;
+/* Tablet: Card layout but slightly larger */
+@media (min-width: 641px) and (max-width: 1023px) {
+    table {
+        display: block;
+        border: 0;
+    }
+    
+    thead {
+        display: none;
+    }
+    
+    tbody {
+        display: block;
+    }
+    
+    tr {
+        display: block;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        background: #fff;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        padding: 12px;
+    }
+    
+    td {
+        display: grid;
+        grid-template-columns: 90px 1fr;
+        gap: 8px;
+        text-align: left;
+        padding: 6px 0;
+        border: none;
+        align-items: start;
+        border-bottom: 1px solid #f1f5f9;
+        font-size: 12px;
+    }
+    
+    td:last-child {
+        border-bottom: none;
+    }
+    
+    td::before {
+        content: attr(data-label);
+        font-weight: 700;
+        color: #475569;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    
+    tr:hover td {
+        background: transparent;
+    }
 }
 
-tr:hover td {
-    background: #f8fafc;
+/* Desktop: Traditional table */
+@media (min-width: 1024px) {
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        display: table;
+    }
+    
+    thead {
+        display: table-header-group;
+    }
+    
+    tbody {
+        display: table-row-group;
+    }
+    
+    tr {
+        display: table-row;
+    }
+    
+    th {
+        background: #f1f5f9;
+        padding: 14px 16px;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #475569;
+        text-align: left;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+    
+    td {
+        padding: 14px 16px;
+        font-size: 14px;
+        border-top: 1px solid #e5e7eb;
+        border-bottom: none;
+    }
+    
+    tr:hover td {
+        background: #f8fafc;
+    }
 }
 
 /* ================================
-   ACTION BUTTONS
+   ACTION BUTTONS - MOBILE FIRST
 ================================ */
 button {
     font-family: inherit;
-    font-size: 13px;
-    font-weight: 600;
-    padding: 8px 18px;
-    border-radius: 999px;
     border: none;
     cursor: pointer;
     transition: all 0.25s ease;
 }
 
-/* ACCEPT */
+button.accept,
+button.reject {
+    font-size: 12px;
+    padding: 9px 12px;
+    border-radius: 999px;
+    min-height: 38px;
+    font-weight: 600;
+}
+
+@media (min-width: 640px) {
+    button.accept,
+    button.reject {
+        font-size: 12px;
+        padding: 8px 14px;
+        min-height: 38px;
+    }
+}
+
+@media (min-width: 1024px) {
+    button.accept,
+    button.reject {
+        font-size: 13px;
+        padding: 8px 18px;
+        min-height: auto;
+    }
+}
+
+/* Accept button */
 button.accept {
     background: linear-gradient(135deg, #22c55e, #16a34a);
     color: #ffffff;
-    box-shadow: 0 8px 20px rgba(34, 197, 94, 0.4);
+    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+    margin-right: 4px;
+    margin-bottom: 4px;
+}
+
+@media (min-width: 1024px) {
+    button.accept {
+        margin-bottom: 0;
+    }
 }
 
 button.accept:hover {
     transform: translateY(-2px) scale(1.05);
 }
 
-/* REJECT */
+button.accept:active {
+    transform: scale(0.95);
+}
+
+/* Reject button */
 button.reject {
     background: linear-gradient(135deg, #ef4444, #dc2626);
     color: #ffffff;
-    margin-left: 8px;
-    box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
 }
 
 button.reject:hover {
     transform: translateY(-2px) scale(1.05);
+}
+
+button.reject:active {
+    transform: scale(0.95);
+}
+
+/* Mobile: Full width stacked buttons */
+@media (max-width: 640px) {
+    button.accept,
+    button.reject {
+        display: block;
+        width: 100%;
+        margin: 4px 0;
+    }
+}
+
+/* ================================
+   PRODUCT FORM - MOBILE FIRST
+================================ */
+#productForm {
+    margin-bottom: 12px;
+}
+
+@media (min-width: 640px) {
+    #productForm {
+        margin-bottom: 14px;
+    }
+}
+
+@media (min-width: 1024px) {
+    #productForm {
+        margin-bottom: 24px;
+    }
+}
+
+#productForm div {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+@media (min-width: 640px) {
+    #productForm div {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        max-width: 100%;
+        align-items: center;
+    }
+}
+
+@media (min-width: 1024px) {
+    #productForm div {
+        gap: 12px;
+        max-width: 800px;
+    }
+}
+
+#productForm input,
+#productForm button {
+    font-family: inherit;
+    padding: 12px 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 13px;
+    min-height: 42px;
+    width: 100%;
+}
+
+@media (min-width: 640px) {
+    #productForm input,
+    #productForm button {
+        padding: 10px 13px;
+        font-size: 13px;
+        min-height: 40px;
+        width: auto;
+    }
+}
+
+@media (min-width: 1024px) {
+    #productForm input,
+    #productForm button {
+        padding: 10px 14px;
+        font-size: 14px;
+        min-height: auto;
+    }
+}
+
+#productForm input {
+    flex: 1 1 auto;
+    min-width: 80px;
+}
+
+#productForm button {
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+#productForm button:hover {
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    transform: translateY(-2px);
+}
+
+#productForm button:active {
+    transform: scale(0.95);
+}
+
+#productForm label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    width: 100%;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+@media (min-width: 640px) {
+    #productForm label {
+        width: auto;
+        font-size: 13px;
+    }
+}
+
+@media (min-width: 1024px) {
+    #productForm label {
+        font-size: 14px;
+    }
+}
+
+#prodPreview {
+    max-width: 80px;
+    max-height: 80px;
+    object-fit: cover;
+    border-radius: 6px;
+    display: none;
+}
+
+@media (min-width: 640px) {
+    #prodPreview {
+        max-width: 100px;
+        max-height: 100px;
+    }
+}
+
+/* ================================
+   PRODUCT TABLE - MOBILE FIRST
+================================ */
+#publishedTable,
+#unpublishedTable {
+    width: 100%;
+}
+
+/* Mobile card view */
+@media (max-width: 640px) {
+    #publishedTable tbody tr,
+    #unpublishedTable tbody tr {
+        margin-bottom: 10px;
+        padding: 12px;
+    }
+    
+    #publishedTable td:first-child,
+    #unpublishedTable td:first-child {
+        font-weight: 700;
+        color: #1f2937;
+        font-size: 13px;
+    }
+    
+    #publishedTable img,
+    #unpublishedTable img {
+        max-width: 100px;
+        max-height: 100px;
+        margin-top: 6px;
+        border-radius: 6px;
+    }
+    
+    #publishedTable button,
+    #unpublishedTable button {
+        display: block !important;
+        width: 100% !important;
+        margin: 5px 0 !important;
+        padding: 9px 12px !important;
+        font-size: 12px !important;
+        min-height: 36px !important;
+    }
+}
+
+/* Tablet card view */
+@media (min-width: 641px) and (max-width: 1023px) {
+    #publishedTable td:first-child,
+    #unpublishedTable td:first-child {
+        font-weight: 700;
+        color: #1f2937;
+        font-size: 13px;
+    }
+    
+    #publishedTable img,
+    #unpublishedTable img {
+        max-width: 110px;
+        max-height: 110px;
+        margin-top: 8px;
+        border-radius: 6px;
+    }
+    
+    #publishedTable button,
+    #unpublishedTable button {
+        margin: 5px 0 !important;
+        padding: 9px 13px !important;
+        font-size: 12px !important;
+        min-height: 37px !important;
+    }
+}
+
+/* Desktop table */
+@media (min-width: 1024px) {
+    #publishedTable tbody tr:hover td,
+    #unpublishedTable tbody tr:hover td {
+        background: #f8fafc;
+    }
+}
+
+#publishedTable a,
+#unpublishedTable a {
+    color: #4f46e5;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+#publishedTable a:hover,
+#unpublishedTable a:hover {
+    text-decoration: underline;
+}
+
+/* ================================
+   WHATSAPP TOGGLE - MOBILE FIRST
+================================ */
+#whatsappToggle {
+    appearance: none;
+    width: 44px;
+    height: 24px;
+    background: #cbd5f5;
+    border-radius: 999px;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    flex-shrink: 0;
+}
+
+@media (min-width: 640px) {
+    #whatsappToggle {
+        width: 48px;
+        height: 26px;
+    }
+}
+
+@media (min-width: 1024px) {
+    #whatsappToggle {
+        width: 52px;
+        height: 28px;
+    }
+}
+
+#whatsappToggle::before {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    top: 3px;
+    left: 3px;
+    background: #ffffff;
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+}
+
+@media (min-width: 640px) {
+    #whatsappToggle::before {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+@media (min-width: 1024px) {
+    #whatsappToggle::before {
+        width: 22px;
+        height: 22px;
+    }
+}
+
+#whatsappToggle:checked {
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+}
+
+#whatsappToggle:checked::before {
+    transform: translateX(20px);
+}
+
+@media (min-width: 640px) {
+    #whatsappToggle:checked::before {
+        transform: translateX(22px);
+    }
+}
+
+@media (min-width: 1024px) {
+    #whatsappToggle:checked::before {
+        transform: translateX(24px);
+    }
+}
+
+/* ================================
+   LOGIN PAGE - MOBILE FIRST
+================================ */
+#loginForm {
+    max-width: 100%;
+    width: 100%;
+}
+
+@media (min-width: 640px) {
+    #loginForm {
+        max-width: 380px;
+    }
+}
+
+#loginForm input,
+#loginForm button {
+    font-size: 13px;
+    padding: 13px 13px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: inherit;
+    min-height: 46px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 12px;
+}
+
+@media (min-width: 640px) {
+    #loginForm input,
+    #loginForm button {
+        padding: 12px 14px;
+        font-size: 13px;
+        min-height: 44px;
+        margin-bottom: 12px;
+    }
+}
+
+#loginForm input:focus {
+    outline: none;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+#loginForm button {
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    color: #fff;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 6px;
+}
+
+@media (min-width: 640px) {
+    #loginForm button {
+        margin-top: 8px;
+    }
+}
+
+#loginForm button:hover {
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    transform: translateY(-2px);
+}
+
+#loginForm button:active {
+    transform: scale(0.98);
+}
+
+#msg {
+    font-size: 13px;
+    line-height: 1.5;
+    min-height: 22px;
+    margin-bottom: 8px;
+}
+
+#loginForm h1 {
+    text-align: center;
+    margin-bottom: 24px;
+    font-size: 22px;
+    font-weight: 800;
+    color: #1f2937;
+}
+
+@media (min-width: 640px) {
+    #loginForm h1 {
+        font-size: 26px;
+    }
 }
 
 /* ================================
@@ -166,98 +959,12 @@ td[colspan] {
     text-align: center;
     color: #64748b;
     font-style: italic;
-    padding: 20px;
+    padding: 16px;
 }
 
-/* ================================
-   PRODUCT MANAGEMENT PAGE
-================================ */
-#productForm {
-    margin-bottom: 24px;
+@media (max-width: 640px) {
+    td[colspan] {
+        padding: 12px;
+    }
 }
 
-#productForm input,
-#productForm button {
-    font-family: inherit;
-    padding: 10px 14px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 14px;
-}
-
-#productForm input {
-    flex: 1 1 200px;
-    min-width: 120px;
-}
-
-#productForm button {
-    background: linear-gradient(135deg, #6366f1, #4f46e5);
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    transition: background 0.25s ease, transform 0.2s;
-}
-
-#productForm button:hover {
-    background: linear-gradient(135deg, #4f46e5, #6366f1);
-    transform: translateY(-2px);
-}
-
-/* common table styles for product lists */
-#publishedTable th,
-#publishedTable td,
-#unpublishedTable th,
-#unpublishedTable td {
-    padding: 14px 16px;
-    font-size: 14px;
-}
-
-#publishedTable tbody tr:hover td,
-#unpublishedTable tbody tr:hover td {
-    background: #f8fafc;
-}
-
-#publishedTable a,
-#unpublishedTable a {
-    color: #4f46e5;
-    text-decoration: none;
-}
-
-#publishedTable a:hover,
-#unpublishedTable a:hover {
-    text-decoration: underline;
-}
-
-/* ================================
-   WHATSAPP TOGGLE
-================================ */
-#whatsappToggle {
-    appearance: none;
-    width: 52px;
-    height: 28px;
-    background: #cbd5f5;
-    border-radius: 999px;
-    position: relative;
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
-
-#whatsappToggle::before {
-    content: "";
-    position: absolute;
-    width: 22px;
-    height: 22px;
-    top: 3px;
-    left: 3px;
-    background: #ffffff;
-    border-radius: 50%;
-    transition: transform 0.3s ease;
-}
-
-#whatsappToggle:checked {
-    background: linear-gradient(135deg, #22c55e, #16a34a);
-}
-
-#whatsappToggle:checked::before {
-    transform: translateX(24px);
-}

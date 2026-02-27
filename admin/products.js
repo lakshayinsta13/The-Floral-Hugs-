@@ -8,6 +8,17 @@ const PRODUCTS_TABLE = "products";
 let allProducts = [];
 let isEditMode = false; // Global flag for edit mode
 
+// escape helper for safe insertion into HTML
+function escapeHtml(input) {
+    if (input === null || input === undefined) return "";
+    return String(input)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/\"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+}
+
 
 async function loadAllProducts() {
     try {
@@ -61,14 +72,14 @@ function renderProductsTable() {
         const qtyType = p.quantity_type || '';
         const rowHtml = `
             <tr>
-                <td>${p.name}</td>
-                <td>${qtyType}</td>
-                <td>${p.price}</td>
-                <td>${p.discount || 0}</td>
-                <td>${p.details || ""}</td>
-                <td>${imgCell}</td>
-                <td style="text-align:center;"><input type="checkbox" class="publish-toggle" data-id="${p.id}" ${publishedChecked}></td>
-                <td>
+                <td data-label="Name">${escapeHtml(p.name)}</td>
+                <td data-label="Qty Type">${escapeHtml(qtyType)}</td>
+                <td data-label="Price">${escapeHtml(p.price)}</td>
+                <td data-label="Discount">${escapeHtml(p.discount || 0)}</td>
+                <td data-label="Details">${escapeHtml(p.details || "")}</td>
+                <td data-label="Image">${imgCell}</td>
+                <td data-label="Published" style="text-align:center;"><input type="checkbox" class="publish-toggle" data-id="${p.id}" ${publishedChecked}></td>
+                <td data-label="Actions">
                     <button class="edit-product" data-id="${p.id}">Edit</button>
                     <button class="delete-product" data-id="${p.id}">Delete</button>
                 </td>
