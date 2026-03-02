@@ -28,7 +28,7 @@ body {
 /* ================================
    PAGE CONTAINER
 ================================ */
-body > * {
+body>* {
     max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
@@ -130,7 +130,7 @@ div[style*="display:flex"][style*="justify-content:space-between"] {
         flex: 1;
         min-width: 0;
     }
-    
+
     div[style*="display:flex"][style*="justify-content:space-between"] #logoutBtn {
         flex-shrink: 0;
     }
@@ -333,17 +333,17 @@ table {
         display: block;
         border: 0;
     }
-    
+
     thead {
         display: none;
     }
-    
+
     tbody {
         display: block;
         margin: 0;
         padding: 0;
     }
-    
+
     tr {
         display: block;
         border: 1px solid #e5e7eb;
@@ -353,7 +353,7 @@ table {
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
         padding: 12px;
     }
-    
+
     td {
         display: grid;
         grid-template-columns: 75px 1fr;
@@ -366,11 +366,11 @@ table {
         font-size: 12px;
         line-height: 1.5;
     }
-    
+
     td:last-child {
         border-bottom: none;
     }
-    
+
     td::before {
         content: attr(data-label);
         font-weight: 700;
@@ -379,7 +379,7 @@ table {
         text-transform: uppercase;
         letter-spacing: 0.06em;
     }
-    
+
     tr:hover td {
         background: transparent;
     }
@@ -391,15 +391,15 @@ table {
         display: block;
         border: 0;
     }
-    
+
     thead {
         display: none;
     }
-    
+
     tbody {
         display: block;
     }
-    
+
     tr {
         display: block;
         border: 1px solid #e5e7eb;
@@ -409,7 +409,7 @@ table {
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
         padding: 12px;
     }
-    
+
     td {
         display: grid;
         grid-template-columns: 90px 1fr;
@@ -421,11 +421,11 @@ table {
         border-bottom: 1px solid #f1f5f9;
         font-size: 12px;
     }
-    
+
     td:last-child {
         border-bottom: none;
     }
-    
+
     td::before {
         content: attr(data-label);
         font-weight: 700;
@@ -434,7 +434,7 @@ table {
         text-transform: uppercase;
         letter-spacing: 0.05em;
     }
-    
+
     tr:hover td {
         background: transparent;
     }
@@ -447,19 +447,19 @@ table {
         border-collapse: collapse;
         display: table;
     }
-    
+
     thead {
         display: table-header-group;
     }
-    
+
     tbody {
         display: table-row-group;
     }
-    
+
     tr {
         display: table-row;
     }
-    
+
     th {
         background: #f1f5f9;
         padding: 14px 16px;
@@ -471,14 +471,14 @@ table {
         font-weight: 700;
         white-space: nowrap;
     }
-    
+
     td {
         padding: 14px 16px;
         font-size: 14px;
         border-top: 1px solid #e5e7eb;
         border-bottom: none;
     }
-    
+
     tr:hover td {
         background: #f8fafc;
     }
@@ -504,6 +504,7 @@ button.reject {
 }
 
 @media (min-width: 640px) {
+
     button.accept,
     button.reject {
         font-size: 12px;
@@ -513,6 +514,7 @@ button.reject {
 }
 
 @media (min-width: 1024px) {
+
     button.accept,
     button.reject {
         font-size: 13px;
@@ -561,6 +563,7 @@ button.reject:active {
 
 /* Mobile: Full width stacked buttons */
 @media (max-width: 640px) {
+
     button.accept,
     button.reject {
         display: block;
@@ -623,6 +626,7 @@ button.reject:active {
 }
 
 @media (min-width: 640px) {
+
     #productForm input,
     #productForm button {
         padding: 10px 13px;
@@ -633,6 +637,7 @@ button.reject:active {
 }
 
 @media (min-width: 1024px) {
+
     #productForm input,
     #productForm button {
         padding: 10px 14px;
@@ -710,48 +715,106 @@ button.reject:active {
 }
 
 /* Mobile card view */
+/* ================================
+   MOBILE GRID UI (replace card list)
+   Put this AFTER your current table styles
+================================ */
+
+/* Mobile: show items in a 2-column grid (auto becomes 1 on very small screens) */
 @media (max-width: 640px) {
-    #publishedTable tbody tr,
-    #unpublishedTable tbody tr {
-        margin-bottom: 10px;
+
+    /* Keep table semantics but make body a grid */
+    table {
+        display: block;
+        border: 0;
+    }
+
+    thead {
+        display: none;
+    }
+
+    tbody {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Very small phones: 1 column */
+    @media (max-width: 420px) {
+        tbody {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* Each row becomes a grid card */
+    tr {
+        display: block;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        background: #fff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         padding: 12px;
+        margin: 0;
+        /* important: grid handles spacing */
+        overflow: hidden;
     }
-    
-    #publishedTable td:first-child,
-    #unpublishedTable td:first-child {
-        font-weight: 700;
-        color: #1f2937;
-        font-size: 13px;
+
+    /* Inside card: stack fields neatly */
+    td {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        padding: 8px 0;
+        border: none;
+        border-bottom: 1px solid #f1f5f9;
+        font-size: 12px;
+        line-height: 1.5;
     }
-    
-    #publishedTable img,
-    #unpublishedTable img {
-        max-width: 100px;
-        max-height: 100px;
-        margin-top: 6px;
-        border-radius: 6px;
+
+    td:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
     }
-    
-    #publishedTable button,
-    #unpublishedTable button {
-        display: block !important;
-        width: 100% !important;
-        margin: 5px 0 !important;
-        padding: 9px 12px !important;
-        font-size: 12px !important;
-        min-height: 36px !important;
+
+    /* label on top, value below */
+    td::before {
+        content: attr(data-label);
+        font-weight: 800;
+        color: #4f46e5;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+    }
+
+    /* Buttons in a nice row on mobile grid cards */
+    td:has(button.accept),
+    td:has(button.reject) {
+        display: flex;
+        flex-direction: row;
+        gap: 8px;
+        border-bottom: none;
+        padding-top: 10px;
+    }
+
+    button.accept,
+    button.reject {
+        width: 50%;
+        margin: 0;
     }
 }
 
 /* Tablet card view */
 @media (min-width: 641px) and (max-width: 1023px) {
+
     #publishedTable td:first-child,
     #unpublishedTable td:first-child {
         font-weight: 700;
         color: #1f2937;
         font-size: 13px;
     }
-    
+
     #publishedTable img,
     #unpublishedTable img {
         max-width: 110px;
@@ -759,7 +822,7 @@ button.reject:active {
         margin-top: 8px;
         border-radius: 6px;
     }
-    
+
     #publishedTable button,
     #unpublishedTable button {
         margin: 5px 0 !important;
@@ -771,6 +834,7 @@ button.reject:active {
 
 /* Desktop table */
 @media (min-width: 1024px) {
+
     #publishedTable tbody tr:hover td,
     #unpublishedTable tbody tr:hover td {
         background: #f8fafc;
@@ -892,6 +956,7 @@ button.reject:active {
 }
 
 @media (min-width: 640px) {
+
     #loginForm input,
     #loginForm button {
         padding: 12px 14px;
@@ -967,4 +1032,3 @@ td[colspan] {
         padding: 12px;
     }
 }
-
