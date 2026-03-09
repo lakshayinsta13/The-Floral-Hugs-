@@ -144,6 +144,24 @@ body {
     box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
 }
 
+.multi-order-row {
+    max-width: 980px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+}
+
+.multi-order-row .multi-toggle-card {
+    margin: 0;
+    flex: 1;
+}
+
+.info-btn-inline {
+    white-space: nowrap;
+}
+
 .multi-switch {
     position: relative;
     width: 52px;
@@ -213,9 +231,18 @@ body {
 
 /* Mobile friendly */
 @media (max-width: 600px) {
+    .multi-order-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
     .multi-toggle-card {
         padding: 14px;
         gap: 12px;
+    }
+
+    .info-btn-inline {
+        text-align: center;
     }
 }
 

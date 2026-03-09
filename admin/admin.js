@@ -133,7 +133,7 @@ function renderTable(status, tbodyId, showActions = false) {
     const rows = allBookings.filter(b => b.status === status);
 
     if (!rows.length) {
-        tbody.innerHTML = `<tr><td colspan="${showActions ? 6 : 5}" align="center">No bookings</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="${showActions ? 6 : 5}" align="center">No orders</td></tr>`;
         return;
     }
 
@@ -173,23 +173,23 @@ async function handleAction(id, status) {
     if (status === "accepted") {
         message = `Hello ${booking.name} 🌸
 
-Your booking for *${booking.item}* has been successfully accepted ✅.
+    Your order for *${booking.item}* has been successfully accepted ✅.
 
-Please share your complete delivery location so we can proceed.
+    Please share your complete delivery location so we can proceed.
 
-Thank you for choosing Aavi Decor 💐`;
+    Thank you for choosing Aavi Cosmatics 💐`;
     }
 
     if (status === "rejected") {
         message = `Hello ${booking.name} 🌸
 
-Thank you for contacting Aavi Decor.
+    Thank you for contacting Aavi Cosmatics.
 
-We regret to inform you that we are currently unable to serve your location 😔.
+    We regret to inform you that we are currently unable to serve your location 😔.
 
-We truly hope to serve you in the future.
+    We truly hope to serve you in the future.
 
-Thank you for your understanding 💐`;
+    Thank you for your understanding 💐`;
     }
 
     // ================================
@@ -199,7 +199,7 @@ Thank you for your understanding 💐`;
         openWhatsApp(booking.phone_no, message);
 
         const confirmSend = confirm(
-            "After sending the WhatsApp message, click OK to update booking status."
+            "After sending the WhatsApp message, click OK to update order status."
         );
 
         if (!confirmSend) return;
@@ -245,11 +245,11 @@ function openWhatsApp(phone, text) {
 }
 function exportToExcel() {
     if (!allBookings || allBookings.length === 0) {
-        alert("No bookings to export");
+        alert("No orders to export");
         return;
     }
 
-    let csv = "Name,Item,Event,Date,Phone,Status\n";
+    let csv = "Name,Item,Order Note,Date,Phone,Status\n";
 
     allBookings.forEach(b => {
         csv += `${b.name},${b.item},${b.event_type},${b.event_date},${b.phone_no},${b.status}\n`;
@@ -259,7 +259,7 @@ function exportToExcel() {
     const link = document.createElement("a");
 
     link.href = URL.createObjectURL(blob);
-    link.download = "bookings.csv";
+    link.download = "orders.csv";
     link.click();
 }
 

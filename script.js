@@ -210,7 +210,7 @@ document.addEventListener("DOMContentLoaded", () => {
         btns.forEach((btn) => {
             const key = btn.dataset.name || "";
             if (!multiMode) {
-                btn.textContent = "Book Now";
+                btn.textContent = "Order Now";
             } else {
                 btn.textContent = cart[key] ? "Added ✓ (Update Qty)" : "Add Item";
             }
@@ -225,34 +225,21 @@ document.addEventListener("DOMContentLoaded", () => {
         if (overlay) overlay.style.display = 'flex';
         try {
             const baseUrl = `${SUPABASE_URL}/rest/v1/${PRODUCTS_TABLE}`;
-            // first attempt: server filter using publish_status OR legacy published boolean
-            let res = await fetch(`${baseUrl}?or=(publish_status.eq.Published,published.eq.true)&order=id.asc`, {
+            // Fetch all products and filter publish state client-side to avoid schema mismatch errors.
+            const res = await fetch(`${baseUrl}?order=id.asc`, {
                 headers: {
                     apikey: SUPABASE_ANON_KEY,
                     Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
                 },
             });
-            let json = await res.json();
+            const json = await res.json();
 
-            // if response is an error and mentions missing column, retry without published
-            if (!Array.isArray(json) && json && json.code === '42703') {
-                console.warn('published column missing, retrying without server filter');
-                res = await fetch(`${baseUrl}?order=id.asc`, {
-                    headers: {
-                        apikey: SUPABASE_ANON_KEY,
-                        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
-                    },
+            if (Array.isArray(json)) {
+                products = json.filter((p) => {
+                    if (typeof p.publish_status === 'string') return p.publish_status === 'Published';
+                    if (typeof p.published === 'boolean') return p.published;
+                    return true;
                 });
-                json = await res.json();
-                if (Array.isArray(json)) {
-                    // client‑side filter by publish_status
-                    products = json.filter((p) => p.publish_status === 'Published');
-                } else {
-                    console.error('unexpected products response on retry', json);
-                    products = [];
-                }
-            } else if (Array.isArray(json)) {
-                products = json;
             } else {
                 console.error('unexpected products response', json);
                 products = [];
@@ -310,7 +297,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <button type="button" class="qty-btn plus">+</button>
             </div>
             <button type="button" class="product-btn" data-name="${p.name}" data-price="${p.price}">
-                Book Now
+                Order Now
             </button>
         </div>
         `;
@@ -395,7 +382,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // ================================
-    // Proceed to booking
+    // Proceed to checkout
     // ================================
     const goToBookingBtn = document.getElementById("goToBooking");
     if (goToBookingBtn) {
@@ -462,7 +449,7 @@ document.addEventListener("DOMContentLoaded", () => {
         e.preventDefault();
         // ✅ stop submit if terms not accepted
         if (agreeTerms && !agreeTerms.checked) {
-            showPopup("Terms Required", "Please accept Terms & Conditions to place booking request.");
+            showPopup("Terms Required", "Please accept Terms & Conditions to place your order request.");
             return;
         }
 
@@ -501,10 +488,10 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!response.ok) throw new Error("Insert failed");
 
             showPopup(
-                "Booking Request Sent Success  🌸",
+                "Order Request Sent Successfully  🌸",
                 `
       Thank you <strong>${bookingData.name}</strong>!<br><br>
-      ✅ Your booking request has been saved.<br>
+    ✅ Your order request has been saved.<br>
       📲 We will contact you shortly on WhatsApp for confirmation.<br><br>
 
       <button id="viewReceiptBtn" style="margin-top:10px; padding:10px 14px; border:none; border-radius:10px; cursor:pointer;">
@@ -513,7 +500,7 @@ document.addEventListener("DOMContentLoaded", () => {
     `
             );
             // ✅ Build receipt data from current cart BEFORE reset
-            const receiptId = "FH-" + Date.now();
+            const receiptId = "AC-" + Date.now();
             const now = new Date();
             const timeStr = now.toLocaleString("en-IN");
 
@@ -564,7 +551,7 @@ document.addEventListener("DOMContentLoaded", () => {
             resetMultiModeHard();
         } catch (error) {
             console.error(error);
-            showPopup("Booking Failed 😔", "Something went wrong. Please try again later.");
+            showPopup("Order Submission Failed 😔", "Something went wrong. Please try again later.");
         }
     });
 
